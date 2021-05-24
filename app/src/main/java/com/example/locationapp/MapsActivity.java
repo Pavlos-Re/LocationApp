@@ -98,7 +98,8 @@ public class MapsActivity extends AppCompatActivity  {
 
                             //Create marker options
                             MarkerOptions options = new MarkerOptions().position(latLng)
-                                    .title("I am there");
+                                    .title("I am there")
+                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
                             //Zoom map
                             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
                             //Add marker on map
