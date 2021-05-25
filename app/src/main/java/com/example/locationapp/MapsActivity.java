@@ -1,10 +1,24 @@
 package com.example.locationapp;
 
+        import android.app.AlarmManager;
+        import android.app.AlertDialog;
+        import android.app.Notification;
+        import android.app.NotificationManager;
+        import android.app.PendingIntent;
+        import android.content.Context;
+        import android.content.DialogInterface;
+        import android.content.Intent;
+        import android.graphics.BitmapFactory;
+        import android.hardware.SensorEvent;
+        import android.hardware.SensorEventListener;
+        import android.hardware.SensorManager;
         import android.os.Build;
 
         import androidx.annotation.NonNull;
         import androidx.appcompat.app.AppCompatActivity;
         import androidx.core.app.ActivityCompat;
+        import androidx.core.app.NotificationCompat;
+        import androidx.core.app.TaskStackBuilder;
         import androidx.core.content.ContextCompat;
         import androidx.fragment.app.FragmentActivity;
 
@@ -32,12 +46,16 @@ package com.example.locationapp;
         import com.google.android.gms.location.LocationRequest;
         import com.google.android.gms.tasks.OnSuccessListener;
         import com.google.android.gms.tasks.Task;
+        import android.hardware.Sensor;
+        import android.telephony.SmsManager;
+        import android.view.View;
+        import android.widget.Button;
+        import android.widget.EditText;
+        import android.widget.TextView;
+        import android.widget.Toast;
 
 
-
-
-public class MapsActivity extends AppCompatActivity  {
-    //Initialize variable
+public class MapsActivity extends AppCompatActivity {
     private GoogleMap mMap;
     Location mLastLocation;
     Marker mCurrLocationMarker;
@@ -46,10 +64,20 @@ public class MapsActivity extends AppCompatActivity  {
     SupportMapFragment supportMapFragment;
     FusedLocationProviderClient client;
 
+    final int MY_PERMISSIONS_REQUEST_SEND_SMS =1;
+    private Button alertButton;
+    private TextView alertTextView;
+
+    String phoneNo;
+    String message;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
 
         //Assign variable
         supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -74,6 +102,9 @@ public class MapsActivity extends AppCompatActivity  {
     }
 
 
+
+
+
     private void getCurrentLocation() {
 
 
@@ -95,6 +126,33 @@ public class MapsActivity extends AppCompatActivity  {
                             //Initialize lat lng
                             LatLng latLng = new LatLng(location.getLatitude()
                                     ,location.getLongitude());
+
+
+
+
+                            alertTextView = (TextView) findViewById(R.id.AlertTextView);
+
+
+
+                                    if(Double.parseDouble(String.valueOf(location.getLongitude()))>23.7169700) {
+
+                                       // AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
+                                      //  String pinpoint = location.getLatitude() + "\n" + location.getLongitude();
+                                     //   builder.setCancelable(false);
+                                      //  builder.setTitle("Current Location");
+                                       // builder.setMessage(pinpoint);
+
+
+                                       // builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                         //   @Override
+                                         //   public void onClick(DialogInterface dialogInterface, int i) {
+                                        sendSMSMessage();
+
+                                           //    // alertTextView.setVisibility(View.VISIBLE);
+                                         //   }
+                                       // });
+                                       // builder.show();
+                                    }
 
                             //Create marker options
                             MarkerOptions options = new MarkerOptions().position(latLng)
@@ -119,15 +177,67 @@ public class MapsActivity extends AppCompatActivity  {
 
     }
 
+    protected void sendSMSMessage() {
+
+        phoneNo = "6948309344";
+        message = "Message from ParentControl app:"+"\n"+"\n"+"Warning! Maximum allowed distance exceeded!";
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.SEND_SMS)
+                == PackageManager.PERMISSION_GRANTED) {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNo, null, message, null, null);
+
+        } else {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.SEND_SMS)) {
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.SEND_SMS},
+                        MY_PERMISSIONS_REQUEST_SEND_SMS);
+
+            }
+
+        }
+    }
+
+
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
+        switch (requestCode){
+            case MY_PERMISSIONS_REQUEST_SEND_SMS: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage(phoneNo, null, message, null, null);
+                    //Toast.makeText(getApplicationContext(), "SMS sent.",
+                      //Toast.LENGTH_LONG).show();
+                    //when permission is granted
+                    //call method
+
+
+
+                }
+
+            }
+
+            }
         if (requestCode == 44){
             if(grantResults.length > 0 &&  grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 //when permission is granted
                 //call method
                 getCurrentLocation();
 
+
+
+
             }
         }
+
+
+        }
+
     }
-}
+
+
+
