@@ -22,6 +22,28 @@ package com.example.locationapp;
         import androidx.core.content.ContextCompat;
         import androidx.fragment.app.FragmentActivity;
 
+        import androidx.appcompat.app.AppCompatActivity;
+        import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+        import android.app.Application;
+        import android.app.DownloadManager;
+        import android.content.BroadcastReceiver;
+        import android.content.ContentResolver;
+        import android.content.Context;
+        import android.content.Intent;
+        import android.content.IntentFilter;
+        import android.database.ContentObserver;
+        import android.database.Cursor;
+        import android.database.Observable;
+        import android.net.Uri;
+        import android.os.Bundle;
+        import android.os.Handler;
+        import android.provider.Telephony;
+        import android.telephony.SmsManager;
+        import android.util.Log;
+        import android.widget.TextView;
+        import android.widget.Toast;
+
         import android.os.Bundle;
 
 //import com.example.parent_control.R;
@@ -54,6 +76,8 @@ package com.example.locationapp;
         import android.widget.TextView;
         import android.widget.Toast;
 
+        import java.util.Calendar;
+
 
 public class MapsActivity extends AppCompatActivity {
     private GoogleMap mMap;
@@ -71,8 +95,6 @@ public class MapsActivity extends AppCompatActivity {
     String phoneNo;
     String message;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +107,9 @@ public class MapsActivity extends AppCompatActivity {
 
         //Initialize fused location
         client = LocationServices.getFusedLocationProviderClient(this);
+
+        ContentResolver contentResolver = getContentResolver();
+        contentResolver.registerContentObserver(Uri.parse("content://sms"), true, new smsObserver(new Handler()));
 
         //Check permission
         if (ActivityCompat.checkSelfPermission(MapsActivity.this,
@@ -101,13 +126,82 @@ public class MapsActivity extends AppCompatActivity {
         }
     }
 
+    class smsObserver extends ContentObserver {
+
+        private String lastSmsId;
+
+        public smsObserver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            Uri uriSMSURI = Uri.parse("content://sms/sent");
+            Cursor cur = getContentResolver().query(uriSMSURI, null, null, null, null);
+            cur.moveToNext();
+            String id = cur.getString(cur.getColumnIndex("_id"));
+            String message = null;
+            String address = null;
+            String test = null;
+
+            if (smsChecker(id)) {
+                //if (cur.getString(cur.getColumnIndex("address")) != "1234565789") {
+
+                address = cur.getString(cur.getColumnIndex("address"));
+                message = cur.getString(cur.getColumnIndex("body"));
+                System.out.println("Message: " + message + " To :" + address);
+
+               // if (!address.equals("1234565789")) {
+                //    String line = message + address;
+               //     String p = "6948309344";
+                //    SmsManager sms = SmsManager.getDefault();
+                 //   sms.sendTextMessage(p, "1234565789", line, null, null);
+
+               // }
+
+            }
+        }
 
 
+        public boolean smsChecker(String smsId) {
+            boolean flagSMS = true;
+
+            if (smsId.equals(lastSmsId)) {
+                flagSMS = false;
+            } else {
+                lastSmsId = smsId;
+            }
+
+            return flagSMS;
+        }
+    }
+
+    protected void onStart() {
+
+        super.onStart();
+        LocalBroadcastManager.getInstance(this).registerReceiver(MyReceiver, new IntentFilter("Fantom-Message"));
+        System.out.println("*** On Start");
+
+    }
+
+    protected void onStop() {
+
+        super.onStop();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(MyReceiver);
+        // TvSMS.setText("SMS Info here.....");
+        // TvCall.setText("Phone Call Info Here...");       //Or we will never see the speaking to message
+        System.out.println("*** On Stop...");
+
+    }
+
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 
 
     private void getCurrentLocation() {
-
-
 
         Task<Location> task = client.getLastLocation();
         task.addOnSuccessListener(new OnSuccessListener<Location>(){
@@ -133,6 +227,7 @@ public class MapsActivity extends AppCompatActivity {
                             alertTextView = (TextView) findViewById(R.id.AlertTextView);
 
 
+                            System.out.println(Double.parseDouble(String.valueOf(location.getLongitude())));
 
                                     if(Double.parseDouble(String.valueOf(location.getLongitude()))>23.7169700) {
 
@@ -141,6 +236,7 @@ public class MapsActivity extends AppCompatActivity {
                                      //   builder.setCancelable(false);
                                       //  builder.setTitle("Current Location");
                                        // builder.setMessage(pinpoint);
+
 
 
                                        // builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -177,6 +273,7 @@ public class MapsActivity extends AppCompatActivity {
 
     }
 
+
     protected void sendSMSMessage() {
 
         phoneNo = "6948309344";
@@ -202,6 +299,22 @@ public class MapsActivity extends AppCompatActivity {
         }
     }
 
+    BroadcastReceiver MyReceiver = new BroadcastReceiver() {
+
+        public void onReceive(Context context, Intent BroadInt) {
+
+            System.out.println("Action: " + BroadInt.getAction());
+            System.out.println("*** On Receive...");
+            String Type = BroadInt.getStringExtra("To:");
+            String Mess = BroadInt.getStringExtra("Message:");
+            //  if (Type.equals("SMS"))
+            // TvSMS.setText(Mess);
+            //  if (Type.equals("PHONE"))
+            //  TvCall.setText(Mess);
+
+        }
+    };
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
@@ -215,8 +328,6 @@ public class MapsActivity extends AppCompatActivity {
                     //when permission is granted
                     //call method
 
-
-
                 }
 
             }
@@ -228,9 +339,6 @@ public class MapsActivity extends AppCompatActivity {
                 //call method
                 getCurrentLocation();
 
-
-
-
             }
         }
 
@@ -238,6 +346,3 @@ public class MapsActivity extends AppCompatActivity {
         }
 
     }
-
-
-
