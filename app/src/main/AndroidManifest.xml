@@ -13,6 +13,9 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.WRITE_SMS" />
+
+
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
@@ -56,6 +59,7 @@
         </receiver>
 
 
+
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps">
@@ -68,7 +72,3 @@
     </application>
 
 </manifest>
-
-<!--
-Cock and Balls
--->

@@ -32,6 +32,7 @@ public class StartUpReceiver extends BroadcastReceiver
     @Override
     public void onReceive (Context context, Intent intent)
     {
+
         Cont = context;
         String Action = intent.getAction ();
         //System.out.println ("****** Broadcast received " + Action);
