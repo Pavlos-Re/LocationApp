@@ -1,88 +1,89 @@
 package com.example.locationapp;
 
-        import android.app.AlarmManager;
-        import android.app.AlertDialog;
-        import android.app.Notification;
-        import android.app.NotificationManager;
-        import android.app.PendingIntent;
-        import android.content.Context;
+import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 
-        import android.content.DialogInterface;
-        import android.content.Intent;
-        import android.graphics.BitmapFactory;
-        import android.hardware.SensorEvent;
-        import android.hardware.SensorEventListener;
-        import android.hardware.SensorManager;
-        import android.os.Build;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.os.Build;
 
-        import androidx.annotation.NonNull;
-        import androidx.appcompat.app.AppCompatActivity;
-        import androidx.core.app.ActivityCompat;
-        import androidx.core.app.NotificationCompat;
-        import androidx.core.app.TaskStackBuilder;
-        import androidx.core.content.ContextCompat;
-        import androidx.fragment.app.FragmentActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.TaskStackBuilder;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 
-        import androidx.appcompat.app.AppCompatActivity;
-        import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-        import android.app.Application;
-        import android.app.DownloadManager;
-        import android.content.BroadcastReceiver;
-        import android.content.ContentResolver;
-        import android.content.Context;
-        import android.content.Intent;
-        import android.content.IntentFilter;
-        import android.database.ContentObserver;
-        import android.database.Cursor;
-        import android.database.Observable;
-        import android.net.Uri;
-        import android.os.Bundle;
-        import android.os.Handler;
-        import android.provider.Telephony;
-        import android.telephony.SmsManager;
-        import android.util.Log;
-        import android.widget.TextView;
-        import android.widget.Toast;
+import android.app.Application;
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.ContentObserver;
+import android.database.Cursor;
+import android.database.Observable;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Telephony;
+import android.telephony.SmsManager;
+import android.util.Log;
+import android.widget.TextView;
+import android.widget.Toast;
 
-        import android.os.Bundle;
+import android.os.Bundle;
 
 //import com.example.parent_control.R;
-        import com.google.android.gms.common.api.GoogleApiClient;
-        import com.google.android.gms.location.FusedLocationProviderClient;
-        import com.google.android.gms.maps.CameraUpdateFactory;
-        import com.google.android.gms.maps.GoogleMap;
-        import com.google.android.gms.maps.OnMapReadyCallback;
-        import com.google.android.gms.maps.SupportMapFragment;
-        import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-        import com.google.android.gms.maps.model.LatLng;
-        import com.google.android.gms.maps.model.Marker;
-        import com.google.android.gms.maps.model.MarkerOptions;
-        import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.location.LocationServices;
 
-        import android.location.Location;
-        import android.Manifest;
-        import android.content.pm.PackageManager;
+import android.location.Location;
+import android.Manifest;
+import android.content.pm.PackageManager;
 
-        import com.google.android.gms.common.ConnectionResult;
-        import com.google.android.gms.location.LocationListener;
-        import com.google.android.gms.location.LocationRequest;
-        import com.google.android.gms.tasks.OnSuccessListener;
-        import com.google.android.gms.tasks.Task;
-        import android.hardware.Sensor;
-        import android.telephony.SmsManager;
-        import android.view.View;
-        import android.widget.Button;
-        import android.widget.EditText;
-        import android.widget.TextView;
-        import android.widget.Toast;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import android.hardware.Sensor;
+import android.telephony.SmsManager;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-        import java.util.Calendar;
-        import android.app.Service;
+import java.util.Calendar;
+import android.app.Service;
 
 
 
 public class MapsActivity extends AppCompatActivity {
+
     private GoogleMap mMap;
     Location mLastLocation;
     Marker mCurrLocationMarker;
@@ -110,9 +111,6 @@ public class MapsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-
-
-
         //Assign variable
         supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -138,11 +136,13 @@ public class MapsActivity extends AppCompatActivity {
         }
     }
 
+    private static final String COLUMN_TYPE = "type";
+    private static final int MESSAGE_TYPE_SENT = 2;
+
     class smsObserver extends ContentObserver {
         Context context = getApplicationContext();
 
         private String lastSmsId;
-
 
         public smsObserver(Handler handler) {
             super(handler);
@@ -150,18 +150,15 @@ public class MapsActivity extends AppCompatActivity {
 
         @Override
         public void onChange(boolean selfChange) {
-            super.onChange(selfChange);
+            //super.onChange(selfChange);
 
-            Uri uriSMSURI = Uri.parse("content://sms/sent");
+            Uri uriSMSURI = Uri.parse("content://sms//sent");
             Cursor cur = null;
 
-            String id = null;
+            int id = 0;
             String message = null;
             String address = null;
             String test = null;
-
-
-
 
             ActivityCompat.requestPermissions(MapsActivity.this, new String[]{"android.permission.READ_SMS"}, REQUEST_CODE_ASK_PERMISSIONS);
 
@@ -169,27 +166,28 @@ public class MapsActivity extends AppCompatActivity {
                     Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED) {
                 cur =getContentResolver().query(uriSMSURI, null, null, null, null);
                 cur.moveToNext();
-                id = cur.getString(cur.getColumnIndex("_id"));
-                if (smsChecker(id)) {
-                    //if (cur.getString(cur.getColumnIndex("address")) != "1234565789") {
+
+                id = cur.getInt(cur.getColumnIndex("type"));
+                if (id == 2) {
 
                     address = cur.getString(cur.getColumnIndex("address"));
                     message = cur.getString(cur.getColumnIndex("body"));
-                    System.out.println("Message: " + message + " To :" + address);
 
-                    // if (!address.equals("1234565789")) {
-                    //    String line = message + address;
-                    //     String p = "6948309344";
-                    //    SmsManager sms = SmsManager.getDefault();
-                    //   sms.sendTextMessage(p, "1234565789", line, null, null);
+                    if (!address.equals("123456789")) {
+                        if (ContextCompat.checkSelfPermission(context,
+                                Manifest.permission.SEND_SMS)
+                                == PackageManager.PERMISSION_GRANTED) {
 
-                    // }
+                            String line = "Message: " + message + " to: " + address;
+                            String p = "123456789";
+                            SmsManager sms = SmsManager.getDefault();
+                            sms.sendTextMessage(p, null, line, null, null);
 
+
+                        }
+                    }
                 }
-
             }
-
-
 
             else {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(MapsActivity.this,
@@ -203,17 +201,14 @@ public class MapsActivity extends AppCompatActivity {
 
             }
 
-
-
-
         }
 
-
-        public boolean smsChecker(String smsId) {
+      public boolean smsChecker(String smsId) {
             boolean flagSMS = true;
 
+            System.out.println("SMS: " + smsId);
             if (smsId.equals(lastSmsId)) {
-                flagSMS = false;
+               flagSMS = false;
             } else {
                 lastSmsId = smsId;
             }
@@ -271,26 +266,26 @@ public class MapsActivity extends AppCompatActivity {
 
 
                             System.out.println(Double.parseDouble(String.valueOf(location.getLongitude())));
-                           // if (Double.parseDouble(String.valueOf(location.getLongitude())) >1) {
+                            // if (Double.parseDouble(String.valueOf(location.getLongitude())) >1) {
 
-                                // AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
-                                //  String pinpoint = location.getLatitude() + "\n" + location.getLongitude();
-                                //   builder.setCancelable(false);
-                                //  builder.setTitle("Current Location");
-                                // builder.setMessage(pinpoint);
+                            // AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
+                            //  String pinpoint = location.getLatitude() + "\n" + location.getLongitude();
+                            //   builder.setCancelable(false);
+                            //  builder.setTitle("Current Location");
+                            // builder.setMessage(pinpoint);
 
 
-                                // builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                //   @Override
-                                //   public void onClick(DialogInterface dialogInterface, int i) {
+                            // builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            //   @Override
+                            //   public void onClick(DialogInterface dialogInterface, int i) {
                             System.out.println("FUNCTION CALLED");
-                                sendSMSMessage();
+                            sendSMSMessage();
 
-                                //    // alertTextView.setVisibility(View.VISIBLE);
-                                //   }
-                                // });
-                                // builder.show();
-                          //  }
+                            //    // alertTextView.setVisibility(View.VISIBLE);
+                            //   }
+                            // });
+                            // builder.show();
+                            //  }
 
                             //Create marker options
                             MarkerOptions options = new MarkerOptions().position(latLng)
@@ -320,8 +315,8 @@ public class MapsActivity extends AppCompatActivity {
 
     protected void sendSMSMessage() {
 
-        phoneNo = "6971574487";
-        message = "Message from ParentControl app:" + "\n" + "\n" + "Your penis enlargement pills have arrived. Check your mailbox";
+        phoneNo = "123456789";
+        message = "Message from ParentControl app:" + "\n" + "\n" + "Target left area.";
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.SEND_SMS)
@@ -374,7 +369,7 @@ public class MapsActivity extends AppCompatActivity {
                     smsManager2.sendTextMessage(phoneNo, null, message, null, null);
 
                     Toast.makeText(getApplicationContext(), "SMS sent.",
-                    Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_LONG).show();
                     //when permission is granted
                     //call method
 
