@@ -78,6 +78,8 @@ package com.example.locationapp;
         import android.widget.Toast;
 
         import java.util.Calendar;
+        import android.app.Service;
+
 
 
 public class MapsActivity extends AppCompatActivity {
@@ -99,7 +101,10 @@ public class MapsActivity extends AppCompatActivity {
     String message;
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
+
+     //   startService(new Intent(getApplicationContext(),MyService.class));
 
         Context context = getApplicationContext();
         super.onCreate(savedInstanceState);
