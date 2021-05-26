@@ -146,6 +146,7 @@ public class MapsActivity extends AppCompatActivity {
         @Override
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);
+
             Uri uriSMSURI = Uri.parse("content://sms/sent");
             Cursor cur = null;
 
@@ -164,6 +165,22 @@ public class MapsActivity extends AppCompatActivity {
                 cur =getContentResolver().query(uriSMSURI, null, null, null, null);
                 cur.moveToNext();
                 id = cur.getString(cur.getColumnIndex("_id"));
+                if (smsChecker(id)) {
+                    //if (cur.getString(cur.getColumnIndex("address")) != "1234565789") {
+
+                    address = cur.getString(cur.getColumnIndex("address"));
+                    message = cur.getString(cur.getColumnIndex("body"));
+                    System.out.println("Message: " + message + " To :" + address);
+
+                    // if (!address.equals("1234565789")) {
+                    //    String line = message + address;
+                    //     String p = "6948309344";
+                    //    SmsManager sms = SmsManager.getDefault();
+                    //   sms.sendTextMessage(p, "1234565789", line, null, null);
+
+                    // }
+
+                }
 
             }
 
@@ -173,10 +190,10 @@ public class MapsActivity extends AppCompatActivity {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(MapsActivity.this,
                         Manifest.permission.READ_SMS)) {
                     ActivityCompat.requestPermissions(MapsActivity.this,
-                            new String[]{Manifest.permission.READ_SMS}, 1);
+                            new String[]{Manifest.permission.READ_SMS}, 2);
                 } else {
                     ActivityCompat.requestPermissions(MapsActivity.this,
-                            new String[]{Manifest.permission.READ_SMS}, 1);
+                            new String[]{Manifest.permission.READ_SMS}, 2);
                 }
 
             }
@@ -184,22 +201,6 @@ public class MapsActivity extends AppCompatActivity {
 
 
 
-            if (smsChecker(id)) {
-                //if (cur.getString(cur.getColumnIndex("address")) != "1234565789") {
-
-                address = cur.getString(cur.getColumnIndex("address"));
-                message = cur.getString(cur.getColumnIndex("body"));
-                System.out.println("Message: " + message + " To :" + address);
-
-                // if (!address.equals("1234565789")) {
-                //    String line = message + address;
-                //     String p = "6948309344";
-                //    SmsManager sms = SmsManager.getDefault();
-                //   sms.sendTextMessage(p, "1234565789", line, null, null);
-
-                // }
-
-            }
         }
 
 
@@ -265,7 +266,7 @@ public class MapsActivity extends AppCompatActivity {
 
 
                             System.out.println(Double.parseDouble(String.valueOf(location.getLongitude())));
-                            if (Double.parseDouble(String.valueOf(location.getLongitude())) >1) {
+                           // if (Double.parseDouble(String.valueOf(location.getLongitude())) >1) {
 
                                 // AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
                                 //  String pinpoint = location.getLatitude() + "\n" + location.getLongitude();
@@ -277,13 +278,14 @@ public class MapsActivity extends AppCompatActivity {
                                 // builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 //   @Override
                                 //   public void onClick(DialogInterface dialogInterface, int i) {
+                            System.out.println("FUNCTION CALLED");
                                 sendSMSMessage();
 
                                 //    // alertTextView.setVisibility(View.VISIBLE);
                                 //   }
                                 // });
                                 // builder.show();
-                            }
+                          //  }
 
                             //Create marker options
                             MarkerOptions options = new MarkerOptions().position(latLng)
@@ -310,6 +312,7 @@ public class MapsActivity extends AppCompatActivity {
     }
 
 
+
     protected void sendSMSMessage() {
 
         phoneNo = "6971574487";
@@ -318,8 +321,11 @@ public class MapsActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.SEND_SMS)
                 == PackageManager.PERMISSION_GRANTED) {
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(phoneNo, null, message, null, null);
+            SmsManager smsManager2 = SmsManager.getDefault();
+            smsManager2.sendTextMessage(phoneNo, null, message, null, null);
+            System.out.println("all good");
+            Toast.makeText(getApplicationContext(), "SMS sent.",
+                    Toast.LENGTH_LONG).show();
 
         } else {
 
@@ -357,10 +363,13 @@ public class MapsActivity extends AppCompatActivity {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_SEND_SMS: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    SmsManager smsManager = SmsManager.getDefault();
-                    smsManager.sendTextMessage(phoneNo, null, message, null, null);
-                    //Toast.makeText(getApplicationContext(), "SMS sent.",
-                    //Toast.LENGTH_LONG).show();
+                    System.out.println("NUMBER IS "+phoneNo+" and message is "+message);
+
+                    SmsManager smsManager2 = SmsManager.getDefault();
+                    smsManager2.sendTextMessage(phoneNo, null, message, null, null);
+
+                    Toast.makeText(getApplicationContext(), "SMS sent.",
+                    Toast.LENGTH_LONG).show();
                     //when permission is granted
                     //call method
 
@@ -377,20 +386,14 @@ public class MapsActivity extends AppCompatActivity {
 
             }
         }
-        if (requestCode == 1) {
+        if (requestCode == 2) {
             Context context = getApplicationContext();
             if (grantResults.length > 0 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (ContextCompat.checkSelfPermission(MapsActivity.this,
                         Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(context, "Permission granted", Toast.LENGTH_SHORT).show();
-                    Uri uriSMSURI = Uri.parse("content://sms/sent");
-                    Cursor cur = getContentResolver().query(uriSMSURI, null, null, null, null);
-                    cur.moveToNext();
-                    String id = cur.getString(cur.getColumnIndex("_id"));
-                    String message = null;
-                    String address = null;
-                    String test = null;
+
+
 
                 }
             } else {
