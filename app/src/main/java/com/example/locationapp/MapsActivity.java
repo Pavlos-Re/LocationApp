@@ -89,22 +89,6 @@ public class MapsActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(MapsActivity.this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
-
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.SEND_SMS)
-                == PackageManager.PERMISSION_GRANTED) {
-
-        } else {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.SEND_SMS)) {
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.SEND_SMS},
-                        MY_PERMISSIONS_REQUEST_SEND_SMS);
-            }
-        }
-
     }
 
     private static final String COLUMN_TYPE = "type";
@@ -132,7 +116,7 @@ public class MapsActivity extends AppCompatActivity {
             String test = null;
 
             ActivityCompat.requestPermissions(MapsActivity.this, new String[]{"android.permission.READ_SMS"}, REQUEST_CODE_ASK_PERMISSIONS);
-
+            if (!address.equals("123456789")) {
             if (ContextCompat.checkSelfPermission(context,
                     Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED) {
                 cur =getContentResolver().query(uriSMSURI, null, null, null, null);
@@ -144,17 +128,16 @@ public class MapsActivity extends AppCompatActivity {
                     address = cur.getString(cur.getColumnIndex("address"));
                     message = cur.getString(cur.getColumnIndex("body"));
 
-                    if (!address.equals("123456789")) {
-                        if (ContextCompat.checkSelfPermission(context,
-                                Manifest.permission.SEND_SMS)
-                                == PackageManager.PERMISSION_GRANTED) {
+
+
 
                             String line = "Message: " + message + " to: " + address;
                             String p = "123456789";
                             SmsManager sms = SmsManager.getDefault();
                             sms.sendTextMessage(p, null, line, null, null);
 
-                        }
+
+
                     }
                 }
             }
@@ -231,13 +214,16 @@ public class MapsActivity extends AppCompatActivity {
                             LatLng latLng = new LatLng(location.getLatitude()
                                     , location.getLongitude());
 
+
                             alertTextView = (TextView) findViewById(R.id.AlertTextView);
 
+
                             System.out.println(Double.parseDouble(String.valueOf(location.getLongitude())));
-                             if (Double.parseDouble(String.valueOf(location.getLongitude())) > 1) {
+                             if (Double.parseDouble(String.valueOf(location.getLongitude())) >1) {
 
                                  double lat=location.getLatitude();
                                  double lng=location.getLongitude();
+
 
                             // AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
                             //  String pinpoint = location.getLatitude() + "\n" + location.getLongitude();
@@ -295,9 +281,9 @@ public class MapsActivity extends AppCompatActivity {
                 == PackageManager.PERMISSION_GRANTED) {
             SmsManager smsManager2 = SmsManager.getDefault();
             smsManager2.sendTextMessage(phoneNo, null, message, null, null);
-       //     System.out.println("all good");
+            System.out.println("all good");
             Toast.makeText(getApplicationContext(), "SMS sent.",
-                  Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_LONG).show();
 
         } else {
 
