@@ -10,6 +10,8 @@ import android.widget.Toast;
 public class MyService extends Service {
     public MyService() {
     }
+
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
         onTaskRemoved(intent);
@@ -30,3 +32,5 @@ public class MyService extends Service {
         super.onTaskRemoved(rootIntent);
     }
 }
+
+

@@ -119,7 +119,7 @@ public class StartUpReceiver extends BroadcastReceiver
             if (Caller != null)
             {
                 WriteLog ("Phone Rests: " + Caller);
-                WriteLog ("--");
+
 
             }
         }

@@ -1,5 +1,6 @@
 package com.example.locationapp;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,13 +57,21 @@ public class MapsActivity extends AppCompatActivity {
     String phoneNo;
     String message;
 
+
+
+
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
+        PackageManager p = getPackageManager();
+        ComponentName componentName = new ComponentName(this, MapsActivity.class); // activity which is first time open in manifiest file which is declare as <category android:name="android.intent.category.LAUNCHER" />
+        p.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 
         Context context = getApplicationContext();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        //startService(new Intent(MapsActivity.this,MyService.class));
+
 
         //Assign variable
         supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -201,16 +210,29 @@ public class MapsActivity extends AppCompatActivity {
 
         super.onStop();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(MyReceiver);
+        PackageManager p = getPackageManager();
+        ComponentName componentName = new ComponentName(this, MapsActivity.class);
+        p.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
         // TvSMS.setText("SMS Info here.....");
         // TvCall.setText("Phone Call Info Here...");       //Or we will never see the speaking to message
         System.out.println("*** On Stop...");
 
     }
+    @Override
+    public void onDestroy() {
 
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+        super.onDestroy();
+        Toast.makeText(getApplicationContext(), "You Are Not Allowed to Exit the App", Toast.LENGTH_SHORT).show();
+
     }
+
+
+
+
+//@Override
+//public void onBackPressed(){
+  //  Toast.makeText(getApplicationContext(),"You Are Not Allowed to Exit the App", Toast.LENGTH_SHORT).show();
+//}
 
 
     private void getCurrentLocation() {
