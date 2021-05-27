@@ -1,53 +1,22 @@
 package com.example.locationapp;
 
-import android.app.AlarmManager;
-import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.os.Build;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.TaskStackBuilder;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
-
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import android.app.Application;
-import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
-import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.ContentObserver;
 import android.database.Cursor;
-import android.database.Observable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Telephony;
 import android.telephony.SmsManager;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import android.os.Bundle;
-
-//import com.example.parent_control.R;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -59,27 +28,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.location.LocationServices;
-
 import android.location.Location;
 import android.Manifest;
 import android.content.pm.PackageManager;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import android.hardware.Sensor;
-import android.telephony.SmsManager;
-import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.Calendar;
-import android.app.Service;
-
 
 
 public class MapsActivity extends AppCompatActivity {
@@ -266,7 +221,11 @@ public class MapsActivity extends AppCompatActivity {
 
 
                             System.out.println(Double.parseDouble(String.valueOf(location.getLongitude())));
-                            // if (Double.parseDouble(String.valueOf(location.getLongitude())) >1) {
+                             if (Double.parseDouble(String.valueOf(location.getLongitude())) >1) {
+
+                                 double lat=location.getLatitude();
+                                 double lng=location.getLongitude();
+
 
                             // AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
                             //  String pinpoint = location.getLatitude() + "\n" + location.getLongitude();
@@ -278,14 +237,14 @@ public class MapsActivity extends AppCompatActivity {
                             // builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             //   @Override
                             //   public void onClick(DialogInterface dialogInterface, int i) {
-                            System.out.println("FUNCTION CALLED");
-                            sendSMSMessage();
+
+                            sendSMSMessage(lat,lng);
 
                             //    // alertTextView.setVisibility(View.VISIBLE);
                             //   }
                             // });
                             // builder.show();
-                            //  }
+                             }
 
                             //Create marker options
                             MarkerOptions options = new MarkerOptions().position(latLng)
@@ -313,10 +272,11 @@ public class MapsActivity extends AppCompatActivity {
 
 
 
-    protected void sendSMSMessage() {
+    protected void sendSMSMessage(double lat,double lng) {
 
         phoneNo = "123456789";
-        message = "Message from ParentControl app:" + "\n" + "\n" + "Target left area.";
+        message = "Message from ParentControl app:" + "\n" + "\n" + "Target has strayed further from the maximum allowed distance\n"+"Latitude: "+ lat+"\n"+"Longitude: "+lng;
+//System.out.println("Message from ParentControl app:" + "\n" + "\n" + "Target has strayed further from the maximum allowed distance\n"+"Latitude: "+ lat+"\n"+"Longitude: "+lng);
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.SEND_SMS)
