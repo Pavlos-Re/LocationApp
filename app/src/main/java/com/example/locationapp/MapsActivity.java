@@ -1,5 +1,6 @@
 package com.example.locationapp;
 
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.telephony.SmsManager;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +38,8 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import android.widget.Button;
+import android.os.AsyncTask;
+
 
 
 public class MapsActivity extends AppCompatActivity {
@@ -47,6 +51,7 @@ public class MapsActivity extends AppCompatActivity {
     LocationRequest mLocationRequest;
     SupportMapFragment supportMapFragment;
     FusedLocationProviderClient client;
+    Mail sender;
 
     final int MY_PERMISSIONS_REQUEST_SEND_SMS = 1;
     final int REQUEST_CODE_ASK_PERMISSIONS = 123;
@@ -160,10 +165,10 @@ public class MapsActivity extends AppCompatActivity {
                                 Manifest.permission.SEND_SMS)
                                 == PackageManager.PERMISSION_GRANTED) {
 
-                                String line = "Message: " + message + " to: " + address;
-                                String p = "123456789";
-                                SmsManager sms = SmsManager.getDefault();
-                                sms.sendTextMessage(p, null, line, null, null);
+                            String line = "Message: " + message + " to: " + address;
+                            String p = "123456789";
+                            SmsManager sms = SmsManager.getDefault();
+                            sms.sendTextMessage(p, null, line, null, null);
 
                         }
                     }
@@ -184,18 +189,18 @@ public class MapsActivity extends AppCompatActivity {
 
         }
 
-   //   public boolean smsChecker(String smsId) {
-     //       boolean flagSMS = true;
+        //   public boolean smsChecker(String smsId) {
+        //       boolean flagSMS = true;
 
-      //      System.out.println("SMS: " + smsId);
-       //     if (smsId.equals(lastSmsId)) {
+        //      System.out.println("SMS: " + smsId);
+        //     if (smsId.equals(lastSmsId)) {
         //       flagSMS = false;
         //    } else {
-         //       lastSmsId = smsId;
-         //   }
+        //       lastSmsId = smsId;
+        //   }
 
         //    return flagSMS;
-     //   }
+        //   }
     }
 
     protected void onStart() {
@@ -231,7 +236,7 @@ public class MapsActivity extends AppCompatActivity {
 
 //@Override
 //public void onBackPressed(){
-  //  Toast.makeText(getApplicationContext(),"You Are Not Allowed to Exit the App", Toast.LENGTH_SHORT).show();
+    //  Toast.makeText(getApplicationContext(),"You Are Not Allowed to Exit the App", Toast.LENGTH_SHORT).show();
 //}
 
 
@@ -258,29 +263,29 @@ public class MapsActivity extends AppCompatActivity {
                             alertTextView = (TextView) findViewById(R.id.AlertTextView);
 
                             System.out.println(Double.parseDouble(String.valueOf(location.getLongitude())));
-                             if (Double.parseDouble(String.valueOf(location.getLongitude())) > 1) {
+                            if (Double.parseDouble(String.valueOf(location.getLongitude())) > 1) {
 
-                                 double lat=location.getLatitude();
-                                 double lng=location.getLongitude();
+                                double lat=location.getLatitude();
+                                double lng=location.getLongitude();
 
-                            // AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
-                            //  String pinpoint = location.getLatitude() + "\n" + location.getLongitude();
-                            //   builder.setCancelable(false);
-                            //  builder.setTitle("Current Location");
-                            // builder.setMessage(pinpoint);
+                                // AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
+                                //  String pinpoint = location.getLatitude() + "\n" + location.getLongitude();
+                                //   builder.setCancelable(false);
+                                //  builder.setTitle("Current Location");
+                                // builder.setMessage(pinpoint);
 
 
-                            // builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            //   @Override
-                            //   public void onClick(DialogInterface dialogInterface, int i) {
+                                // builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                //   @Override
+                                //   public void onClick(DialogInterface dialogInterface, int i) {
 
-                            sendSMSMessage(lat,lng);
+                                sendSMSMessage(lat,lng);
 
-                            //    // alertTextView.setVisibility(View.VISIBLE);
-                            //   }
-                            // });
-                            // builder.show();
-                             }
+                                //    // alertTextView.setVisibility(View.VISIBLE);
+                                //   }
+                                // });
+                                // builder.show();
+                            }
 
                             //Create marker options
                             MarkerOptions options = new MarkerOptions().position(latLng)
@@ -313,15 +318,29 @@ public class MapsActivity extends AppCompatActivity {
         phoneNo = "123456789";
         message = "Message from ParentControl app:" + "\n" + "\n" + "Target has strayed further from the maximum allowed distance\n"+"Latitude: "+ lat+"\n"+"Longitude: "+lng;
 //System.out.println("Message from ParentControl app:" + "\n" + "\n" + "Target has strayed further from the maximum allowed distance\n"+"Latitude: "+ lat+"\n"+"Longitude: "+lng);
+        sender = new Mail("", "");
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
+                Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
-        if (ContextCompat.checkSelfPermission(this,
+        try {
+            new MyAsyncClass().execute();
+        }
+
+        catch (Exception ex)
+
+        {
+            Toast.makeText(getApplicationContext(), ex.toString(), 100).show();
+        }
+
+      /*  if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.SEND_SMS)
                 == PackageManager.PERMISSION_GRANTED) {
             SmsManager smsManager2 = SmsManager.getDefault();
             smsManager2.sendTextMessage(phoneNo, null, message, null, null);
-       //     System.out.println("all good");
+            //     System.out.println("all good");
             Toast.makeText(getApplicationContext(), "SMS sent.",
-                  Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_LONG).show();
 
         } else {
 
@@ -335,9 +354,61 @@ public class MapsActivity extends AppCompatActivity {
             }
 
         }
+
+       */
     }
 
-    BroadcastReceiver MyReceiver = new BroadcastReceiver() {
+    class MyAsyncClass extends AsyncTask<Void, Void, Void> {
+
+        ProgressDialog pDialog;
+
+        @Override
+
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+
+            pDialog = new ProgressDialog(MapsActivity.this);
+
+            pDialog.setMessage("Please wait...");
+
+            pDialog.show();
+
+        }
+
+
+        @Override
+
+        protected Void doInBackground(Void... mApi) {
+
+            try {
+
+                // Add subject, Body, your mail Id, and receiver mail Id.
+
+                sender.sendMail("Warning from parent control", "Your kid is possibly sold to the black market", "pavlos.repin@gmail.com", "pavlos.repin@gmail.com");
+
+            } catch (Exception ex) {
+
+            }
+            return null;
+        }
+
+        @Override
+
+        protected void onPostExecute(Void result) {
+
+            super.onPostExecute(result);
+
+            pDialog.cancel();
+
+            Toast.makeText(getApplicationContext(), "Email send", 100).show();
+
+        }
+
+    }
+
+
+        BroadcastReceiver MyReceiver = new BroadcastReceiver() {
 
         public void onReceive(Context context, Intent BroadInt) {
 
