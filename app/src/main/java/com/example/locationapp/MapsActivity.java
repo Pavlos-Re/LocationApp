@@ -71,12 +71,12 @@ public class MapsActivity extends AppCompatActivity {
         Context context = getApplicationContext();
         client = LocationServices.getFusedLocationProviderClient(this);
 
-
         //Check permission
         if (ActivityCompat.checkSelfPermission(MapsActivity.this,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             //when permission granted
             //call method
+
             getCurrentLocation();
 
         } else {
@@ -84,29 +84,6 @@ public class MapsActivity extends AppCompatActivity {
             //Request permission
             ActivityCompat.requestPermissions(MapsActivity.this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
-        }
-
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.SEND_SMS)
-                == PackageManager.PERMISSION_GRANTED) {
-
-        } else {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.SEND_SMS)) {
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.SEND_SMS},
-                        MY_PERMISSIONS_REQUEST_SEND_SMS);
-            }
-        }
-
-        if (ContextCompat.checkSelfPermission(context,
-                Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED) {
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.SEND_SMS},
-                    MY_PERMISSIONS_REQUEST_SEND_SMS);
         }
 
 
@@ -151,44 +128,32 @@ public class MapsActivity extends AppCompatActivity {
             if (ContextCompat.checkSelfPermission(context,
                     Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED) {
                 cur = getContentResolver().query(uriSMSURI, null, null, null, null);
-                cur.moveToNext();
+                while(cur.moveToNext()) {
 
-                id = cur.getInt(cur.getColumnIndex("type"));
-                if (id == 2) {
+                    id = cur.getInt(cur.getColumnIndex("type"));
+                    if (id == 2) {
 
-                    address = cur.getString(cur.getColumnIndex("address"));
-                    message = cur.getString(cur.getColumnIndex("body"));
+                        address = cur.getString(cur.getColumnIndex("address"));
+                        message = cur.getString(cur.getColumnIndex("body"));
 
-                    if (!address.equals("123456789")) {
-                        if (ContextCompat.checkSelfPermission(context,
-                                Manifest.permission.SEND_SMS)
-                                == PackageManager.PERMISSION_GRANTED) {
+                        if (!address.equals("123456789")) {
 
-                            String line = "Message: " + message + " to: " + address;
-                            sender = new Mail("", "");
-                            StringMake.setString(line);
-                            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
-                                    Builder().permitAll().build();
-                            StrictMode.setThreadPolicy(policy);
+                                String line = "Message: " + message + " to: " + address;
+                                sender = new Mail("pavlos.repin@gmail.com", "paulos21g");
+                                StringMake.setString(line);
+                                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
+                                        Builder().permitAll().build();
+                                StrictMode.setThreadPolicy(policy);
 
-                            try {
-                                new MapsActivity.MyAsyncClass_sms().execute();
-                            } catch (Exception ex) {
-                            }
+                                try {
+                                    new MapsActivity.MyAsyncClass_sms().execute();
+                                } catch (Exception ex) {
 
+                                }
                         }
                     }
                 }
             } else {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(MapsActivity.this,
-                        Manifest.permission.READ_SMS)) {
-                    ActivityCompat.requestPermissions(MapsActivity.this,
-                            new String[]{Manifest.permission.READ_SMS}, 2);
-                } else {
-                    ActivityCompat.requestPermissions(MapsActivity.this,
-                            new String[]{Manifest.permission.READ_SMS}, 2);
-                }
-
             }
 
         }
@@ -232,6 +197,18 @@ public class MapsActivity extends AppCompatActivity {
 
 
     private void getCurrentLocation() {
+
+        if (ActivityCompat.checkSelfPermission(MapsActivity.this,
+                Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED) {
+            //when permission granted
+            //call method
+
+        } else {
+            //When permission denied
+            //Request permission
+            ActivityCompat.requestPermissions(MapsActivity.this,
+                    new String[]{Manifest.permission.READ_SMS}, 2);
+        }
 
         Task<Location> task = client.getLastLocation();
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
@@ -307,7 +284,7 @@ public class MapsActivity extends AppCompatActivity {
         phoneNo = "123456789";
         message = "Message from ParentControl app:" + "\n" + "\n" + "Target has strayed further from the maximum allowed distance\n" + "Latitude: " + lat + "\n" + "Longitude: " + lng;
 //System.out.println("Message from ParentControl app:" + "\n" + "\n" + "Target has strayed further from the maximum allowed distance\n"+"Latitude: "+ lat+"\n"+"Longitude: "+lng);
-        sender = new Mail("", "");
+        sender = new Mail("pavlos.repin@gmail.com", "paulos21g");
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
                 Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -315,29 +292,11 @@ public class MapsActivity extends AppCompatActivity {
         try {
             new MyAsyncClass().execute();
         } catch (Exception ex)
-//
+
         {
-            //    Toast.makeText(getApplicationContext(), ex.toString(), 100).show();
+
         }
 
-      /*  if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.SEND_SMS)
-                == PackageManager.PERMISSION_GRANTED) {
-            SmsManager smsManager2 = SmsManager.getDefault();
-            smsManager2.sendTextMessage(phoneNo, null, message, null, null);
-            //     System.out.println("all good");
-            Toast.makeText(getApplicationContext(), "SMS sent.",
-                    Toast.LENGTH_LONG).show();
-        } else {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.SEND_SMS)) {
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.SEND_SMS},
-                        MY_PERMISSIONS_REQUEST_SEND_SMS);
-            }
-        }
-       */
     }
 
     static class StringMake {
@@ -355,7 +314,6 @@ public class MapsActivity extends AppCompatActivity {
 
     class MyAsyncClass extends AsyncTask<Void, Void, Void> {
 
-        //   ProgressDialog pDialog;
 
         @Override
 
@@ -363,11 +321,6 @@ public class MapsActivity extends AppCompatActivity {
 
             super.onPreExecute();
 
-            //  pDialog = new ProgressDialog(MapsActivity.this);
-
-            //  pDialog.setMessage("Please wait...");
-
-            //  pDialog.show();
 
         }
 
@@ -378,8 +331,7 @@ public class MapsActivity extends AppCompatActivity {
 
             try {
 
-                // Add subject, Body, your mail Id, and receiver mail Id.
-                sender.sendMail("Warning from parent control", "ooooooooooof", "", "cse242017051@uniwa.gr");
+                sender.sendMail("Warning from parent control", "ooooooooooof", "pavlos.repin@gmail.com", "pavlos.repin@gmail.com");
 
             } catch (Exception ex) {
 
@@ -393,29 +345,18 @@ public class MapsActivity extends AppCompatActivity {
 
             super.onPostExecute(result);
 
-            //   pDialog.cancel();
-
-            // Toast.makeText(getApplicationContext(), "Email send", 100).show();
-
         }
 
     }
 
     class MyAsyncClass_sms extends AsyncTask<Void, Void, Void> {
 
-        //   ProgressDialog pDialog;
 
         @Override
 
         protected void onPreExecute() {
 
             super.onPreExecute();
-
-            //  pDialog = new ProgressDialog(MapsActivity.this);
-
-            //  pDialog.setMessage("Please wait...");
-
-            //  pDialog.show();
 
         }
 
@@ -429,7 +370,7 @@ public class MapsActivity extends AppCompatActivity {
                 // Add subject, Body, your mail Id, and receiver mail Id.
                 String line = null;
                 line = StringMake.getString();
-                sender.sendMail("Warning from parent control", line, "", "cse242017051@uniwa.gr");
+                sender.sendMail("Warning from parent control", line, "pavlos.repin@gmail.com", "pavlos.repin@gmail.com");
 
             } catch (Exception ex) {
 
@@ -442,10 +383,6 @@ public class MapsActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
 
             super.onPostExecute(result);
-
-            //   pDialog.cancel();
-
-            // Toast.makeText(getApplicationContext(), "Email send", 100).show();
 
         }
 
@@ -460,10 +397,6 @@ public class MapsActivity extends AppCompatActivity {
             System.out.println("*** On Receive...");
             String Type = BroadInt.getStringExtra("To:");
             String Mess = BroadInt.getStringExtra("Message:");
-            //  if (Type.equals("SMS"))
-            // TvSMS.setText(Mess);
-            //  if (Type.equals("PHONE"))
-            //  TvCall.setText(Mess);
 
         }
     };
