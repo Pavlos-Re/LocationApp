@@ -318,7 +318,7 @@ public class MapsActivity extends AppCompatActivity {
         phoneNo = "123456789";
         message = "Message from ParentControl app:" + "\n" + "\n" + "Target has strayed further from the maximum allowed distance\n"+"Latitude: "+ lat+"\n"+"Longitude: "+lng;
 //System.out.println("Message from ParentControl app:" + "\n" + "\n" + "Target has strayed further from the maximum allowed distance\n"+"Latitude: "+ lat+"\n"+"Longitude: "+lng);
-        sender = new Mail("", "");
+        sender = new Mail("katsarosm47@gmail.com", "KApota11");
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
                 Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -385,7 +385,7 @@ public class MapsActivity extends AppCompatActivity {
 
                 // Add subject, Body, your mail Id, and receiver mail Id.
 
-                sender.sendMail("Warning from parent control", "Your kid is possibly sold to the black market", "pavlos.repin@gmail.com", "pavlos.repin@gmail.com");
+                sender.sendMail("Warning from parent control", "Your kid is possibly sold to the black market", "katsarosm47@gmail.com", "katsarosm47@gmail.com");
 
             } catch (Exception ex) {
 
