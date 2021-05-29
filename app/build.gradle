@@ -48,6 +48,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0-alpha09'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.android.support.test:runner:0.2'
+    implementation 'com.google.android.gms:play-services-location:9.0.2'
+    implementation 'com.github.niqo01.rxplayservices:rx-play-services-location:0.4.0'
 
 
 

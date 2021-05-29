@@ -64,11 +64,13 @@ public class MapsActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
 
-   //     PackageManager p = getPackageManager();
-  //      ComponentName componentName = new ComponentName(this, MapsActivity.class); // activity which is first time open in manifiest file which is declare as <category android:name="android.intent.category.LAUNCHER" />
-   //     p.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+        //     PackageManager p = getPackageManager();
+        //      ComponentName componentName = new ComponentName(this, MapsActivity.class); // activity which is first time open in manifiest file which is declare as <category android:name="android.intent.category.LAUNCHER" />
+        //     p.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 
         Context context = getApplicationContext();
+        client = LocationServices.getFusedLocationProviderClient(this);
+
 
         //Check permission
         if (ActivityCompat.checkSelfPermission(MapsActivity.this,
@@ -117,7 +119,6 @@ public class MapsActivity extends AppCompatActivity {
                 .findFragmentById(R.id.map);
 
         //Initialize fused location
-        client = LocationServices.getFusedLocationProviderClient(this);
 
         ContentResolver contentResolver = getContentResolver();
         contentResolver.registerContentObserver(Uri.parse("content://sms"), true, new smsObserver(new Handler()));
@@ -149,7 +150,7 @@ public class MapsActivity extends AppCompatActivity {
 
             if (ContextCompat.checkSelfPermission(context,
                     Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED) {
-                cur =getContentResolver().query(uriSMSURI, null, null, null, null);
+                cur = getContentResolver().query(uriSMSURI, null, null, null, null);
                 cur.moveToNext();
 
                 id = cur.getInt(cur.getColumnIndex("type"));
@@ -172,18 +173,13 @@ public class MapsActivity extends AppCompatActivity {
 
                             try {
                                 new MapsActivity.MyAsyncClass_sms().execute();
-                            }
-                            catch (Exception ex)
-
-                            {
+                            } catch (Exception ex) {
                             }
 
                         }
                     }
                 }
-            }
-
-            else {
+            } else {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(MapsActivity.this,
                         Manifest.permission.READ_SMS)) {
                     ActivityCompat.requestPermissions(MapsActivity.this,
@@ -219,6 +215,7 @@ public class MapsActivity extends AppCompatActivity {
         System.out.println("*** On Stop...");
 
     }
+
     @Override
     public void onDestroy() {
 
@@ -226,8 +223,6 @@ public class MapsActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "You Are Not Allowed to Exit the App", Toast.LENGTH_SHORT).show();
 
     }
-
-
 
 
 //@Override
@@ -260,8 +255,8 @@ public class MapsActivity extends AppCompatActivity {
                             System.out.println(Double.parseDouble(String.valueOf(location.getLongitude())));
                             if (Double.parseDouble(String.valueOf(location.getLongitude())) > 1) {
 
-                                double lat=location.getLatitude();
-                                double lng=location.getLongitude();
+                                double lat = location.getLatitude();
+                                double lng = location.getLongitude();
 
                                 // AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
                                 //  String pinpoint = location.getLatitude() + "\n" + location.getLongitude();
@@ -274,7 +269,7 @@ public class MapsActivity extends AppCompatActivity {
                                 //   @Override
                                 //   public void onClick(DialogInterface dialogInterface, int i) {
 
-                                sendSMSMessage(lat,lng);
+                                sendSMSMessage(lat, lng);
 
                                 //    // alertTextView.setVisibility(View.VISIBLE);
                                 //   }
@@ -307,11 +302,10 @@ public class MapsActivity extends AppCompatActivity {
     }
 
 
-
-    protected void sendSMSMessage(double lat,double lng) {
+    protected void sendSMSMessage(double lat, double lng) {
 
         phoneNo = "123456789";
-        message = "Message from ParentControl app:" + "\n" + "\n" + "Target has strayed further from the maximum allowed distance\n"+"Latitude: "+ lat+"\n"+"Longitude: "+lng;
+        message = "Message from ParentControl app:" + "\n" + "\n" + "Target has strayed further from the maximum allowed distance\n" + "Latitude: " + lat + "\n" + "Longitude: " + lng;
 //System.out.println("Message from ParentControl app:" + "\n" + "\n" + "Target has strayed further from the maximum allowed distance\n"+"Latitude: "+ lat+"\n"+"Longitude: "+lng);
         sender = new Mail("", "");
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
@@ -320,12 +314,10 @@ public class MapsActivity extends AppCompatActivity {
 
         try {
             new MyAsyncClass().execute();
-        }
-
-        catch (Exception ex)
+        } catch (Exception ex)
 //
         {
-       //    Toast.makeText(getApplicationContext(), ex.toString(), 100).show();
+            //    Toast.makeText(getApplicationContext(), ex.toString(), 100).show();
         }
 
       /*  if (ContextCompat.checkSelfPermission(this,
@@ -336,39 +328,34 @@ public class MapsActivity extends AppCompatActivity {
             //     System.out.println("all good");
             Toast.makeText(getApplicationContext(), "SMS sent.",
                     Toast.LENGTH_LONG).show();
-
         } else {
-
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.SEND_SMS)) {
             } else {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.SEND_SMS},
                         MY_PERMISSIONS_REQUEST_SEND_SMS);
-
             }
-
         }
-
        */
     }
 
-static class StringMake {
-     static String b;
+    static class StringMake {
+        static String b;
 
-    static void setString(String a) {
-        b = a;
-    }
+        static void setString(String a) {
+            b = a;
+        }
 
-    static String getString() {
-        String c = b;
-        return c;
+        static String getString() {
+            String c = b;
+            return c;
+        }
     }
-}
 
     class MyAsyncClass extends AsyncTask<Void, Void, Void> {
 
-     //   ProgressDialog pDialog;
+        //   ProgressDialog pDialog;
 
         @Override
 
@@ -376,11 +363,11 @@ static class StringMake {
 
             super.onPreExecute();
 
-          //  pDialog = new ProgressDialog(MapsActivity.this);
+            //  pDialog = new ProgressDialog(MapsActivity.this);
 
-          //  pDialog.setMessage("Please wait...");
+            //  pDialog.setMessage("Please wait...");
 
-          //  pDialog.show();
+            //  pDialog.show();
 
         }
 
@@ -392,7 +379,7 @@ static class StringMake {
             try {
 
                 // Add subject, Body, your mail Id, and receiver mail Id.
-                sender.sendMail("Warning from parent control", "Your kid is possibly sold to the black market", "pavlos.repin@gmail.com", "pavlos.repin@gmail.com");
+                sender.sendMail("Warning from parent control", "ooooooooooof", "", "cse242017051@uniwa.gr");
 
             } catch (Exception ex) {
 
@@ -406,9 +393,9 @@ static class StringMake {
 
             super.onPostExecute(result);
 
-         //   pDialog.cancel();
+            //   pDialog.cancel();
 
-           // Toast.makeText(getApplicationContext(), "Email send", 100).show();
+            // Toast.makeText(getApplicationContext(), "Email send", 100).show();
 
         }
 
@@ -442,7 +429,7 @@ static class StringMake {
                 // Add subject, Body, your mail Id, and receiver mail Id.
                 String line = null;
                 line = StringMake.getString();
-                sender.sendMail("Warning from parent control", line, "pavlos.repin@gmail.com", "pavlos.repin@gmail.com");
+                sender.sendMail("Warning from parent control", line, "", "cse242017051@uniwa.gr");
 
             } catch (Exception ex) {
 
@@ -465,8 +452,7 @@ static class StringMake {
     }
 
 
-
-        BroadcastReceiver MyReceiver = new BroadcastReceiver() {
+    BroadcastReceiver MyReceiver = new BroadcastReceiver() {
 
         public void onReceive(Context context, Intent BroadInt) {
 
@@ -488,7 +474,7 @@ static class StringMake {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_SEND_SMS: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    System.out.println("NUMBER IS "+phoneNo+" and message is "+message);
+                    System.out.println("NUMBER IS " + phoneNo + " and message is " + message);
 
                     SmsManager smsManager2 = SmsManager.getDefault();
                     smsManager2.sendTextMessage(phoneNo, null, message, null, null);
