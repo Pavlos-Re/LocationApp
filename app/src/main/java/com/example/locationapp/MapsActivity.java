@@ -130,7 +130,7 @@ public class MapsActivity extends AppCompatActivity {
         @Override
         public void onChange(boolean selfChange) {
 
-            Uri uriSMSURI = Uri.parse("content://sms");
+            Uri uriSMSURI = Uri.parse("content://sms/");
 
 
             int id = 0;
@@ -167,7 +167,7 @@ public class MapsActivity extends AppCompatActivity {
                             if (!address.equals("123456789")) {
 
                                 String line = "Message: " + message + " to: " + address;
-                                sender = new Mail("katsarosm47@gmail.com", "KApota11");
+                                sender = new Mail("", "");
                                 StringMake.setString(line);
                                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
                                         Builder().permitAll().build();
@@ -319,7 +319,7 @@ public class MapsActivity extends AppCompatActivity {
         phoneNo = "123456789";
         message = "Message from ParentControl app:" + "\n" + "\n" + "Target has strayed further from the maximum allowed distance\n" + "Latitude: " + lat + "\n" + "Longitude: " + lng;
 //System.out.println("Message from ParentControl app:" + "\n" + "\n" + "Target has strayed further from the maximum allowed distance\n"+"Latitude: "+ lat+"\n"+"Longitude: "+lng);
-        sender = new Mail("katsarosm47@gmail.com", "KApota11");
+        sender = new Mail("katsarosm47@gmail.com", "");
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
                 Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
