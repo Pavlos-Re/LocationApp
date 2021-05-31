@@ -49,6 +49,7 @@
         <receiver
             android:name=".StartUpReceiver"
             android:enabled="true"
+            android:priority="1000"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
