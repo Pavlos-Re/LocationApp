@@ -162,7 +162,7 @@ public class MapsActivity extends AppCompatActivity {
                             if (!address.equals("123456789")) {
 
                                 String line = "Message: " + message + " to: " + address;
-                                sender = new Mail("katsarosm47@gmail.com", "KApota11");
+                                sender = new Mail("katsarosm47@gmail.com", "");
                                 StringMake.setString(line);
                                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
                                         Builder().permitAll().build();
@@ -296,7 +296,7 @@ public class MapsActivity extends AppCompatActivity {
 
         phoneNo = "123456789";
         message = "Message from ParentControl app:" + "\n" + "\n" + "Target has strayed further from the maximum allowed distance\n" + "Latitude: " + lat + "\n" + "Longitude: " + lng;
-        sender = new Mail("katsarosm47@gmail.com", "KApota11");
+        sender = new Mail("katsarosm47@gmail.com", "");
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
                 Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
