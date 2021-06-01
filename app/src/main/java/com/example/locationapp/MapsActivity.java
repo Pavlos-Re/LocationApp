@@ -91,20 +91,22 @@ public class MapsActivity extends AppCompatActivity {
         File path = getApplicationContext().getFilesDir();
         File file = new File(path, "my-file-name.txt");
 
+        final Button mButton = findViewById(R.id.button_id);
 
+
+        final EditText mEdit   = findViewById(R.id.editText);
 
         if(!file.exists()) {
 
 
-            final Button mButton = findViewById(R.id.button_id);
 
-
-            final EditText mEdit   = findViewById(R.id.editText);
 
 
             mButton.setOnClickListener(
                     new View.OnClickListener() {
                         public void onClick(View view) {
+                            mEdit.setVisibility(View.INVISIBLE);
+                            mButton.setVisibility(View.INVISIBLE);
 
 
                             FileOutputStream stream = null;
@@ -143,6 +145,8 @@ public class MapsActivity extends AppCompatActivity {
                     });
         }
         else{
+            mEdit.setVisibility(View.INVISIBLE);
+            mButton.setVisibility(View.INVISIBLE);
             System.out.println("poopie");
         }
         //     PackageManager p = getPackageManager();
@@ -329,7 +333,7 @@ public class MapsActivity extends AppCompatActivity {
                             LatLng latLng = new LatLng(location.getLatitude()
                                     , location.getLongitude());
 
-                            alertTextView = (TextView) findViewById(R.id.AlertTextView);
+
 
                             System.out.println(Double.parseDouble(String.valueOf(location.getLongitude())));
                             if (Double.parseDouble(String.valueOf(location.getLongitude())) > 1) {
