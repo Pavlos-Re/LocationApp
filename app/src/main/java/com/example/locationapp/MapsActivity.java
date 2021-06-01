@@ -20,6 +20,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.telephony.SmsManager;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -42,6 +45,11 @@ import com.google.android.gms.tasks.Task;
 import android.widget.Button;
 import android.os.AsyncTask;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -68,11 +76,75 @@ public class MapsActivity extends AppCompatActivity {
     String phoneNo;
     String message;
 
+    //Button   mButton;
+    //EditText mEdit;
+    String temp;
+
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_maps);
 
 
+
+        File path = getApplicationContext().getFilesDir();
+        File file = new File(path, "my-file-name.txt");
+
+
+
+        if(!file.exists()) {
+
+
+            final Button mButton = findViewById(R.id.button_id);
+
+
+            final EditText mEdit   = findViewById(R.id.editText);
+
+
+            mButton.setOnClickListener(
+                    new View.OnClickListener() {
+                        public void onClick(View view) {
+
+
+                            FileOutputStream stream = null;
+                            try {
+                                stream = new FileOutputStream(file);
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                            try{
+
+
+                                stream.write(mEdit.getText().toString().getBytes());
+                            }catch(Exception ex){}
+                            finally {
+                                try {
+                                    stream.close();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            int length = (int) file.length();
+
+                            byte[] bytes = new byte[length];
+
+                            try {
+                                FileInputStream in = new FileInputStream(file);
+                                in.read(bytes);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            String temp = new String(bytes);
+                            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"+temp);
+
+                        }
+                    });
+        }
+        else{
+            System.out.println("poopie");
+        }
         //     PackageManager p = getPackageManager();
         //      ComponentName componentName = new ComponentName(this, MapsActivity.class); // activity which is first time open in manifiest file which is declare as <category android:name="android.intent.category.LAUNCHER" />
         //     p.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
@@ -94,8 +166,7 @@ public class MapsActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+
         //startService(new Intent(MapsActivity.this,MyService.class));
 
         //Assign variable
@@ -137,7 +208,6 @@ public class MapsActivity extends AppCompatActivity {
             String address = null;
             String test = null;
             Cursor cur = null;
-
 
                 //when permission granted
                 //call method
