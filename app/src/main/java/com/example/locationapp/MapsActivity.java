@@ -1,5 +1,7 @@
 package com.example.locationapp;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -107,6 +109,7 @@ public class MapsActivity extends AppCompatActivity {
 
     }
 
+
     private static final String COLUMN_TYPE = "type";
     private static final int MESSAGE_TYPE_SENT = 2;
 
@@ -162,7 +165,7 @@ public class MapsActivity extends AppCompatActivity {
                             if (!address.equals("123456789")) {
 
                                 String line = "Message: " + message + " to: " + address;
-                                sender = new Mail("katsarosm47@gmail.com", "");
+                                sender = new Mail("pavlos.repin@gmail.com", "");
                                 StringMake.setString(line);
                                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
                                         Builder().permitAll().build();
@@ -296,7 +299,7 @@ public class MapsActivity extends AppCompatActivity {
 
         phoneNo = "123456789";
         message = "Message from ParentControl app:" + "\n" + "\n" + "Target has strayed further from the maximum allowed distance\n" + "Latitude: " + lat + "\n" + "Longitude: " + lng;
-        sender = new Mail("katsarosm47@gmail.com", "");
+        sender = new Mail("pavlos.repin@gmail.com", "");
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
                 Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -341,7 +344,7 @@ public class MapsActivity extends AppCompatActivity {
             try {
 
                 // Add subject, Body, your mail Id, and receiver mail Id.
-                sender.sendMail("Warning from parent control", "ooooooooooof", "katsarosm47@gmail.com", "cse242017051@uniwa.gr");
+                sender.sendMail("Warning from parent control", "ooooooooooof", "pavlos.repin@gmail.com", "cse242017051@uniwa.gr");
 
             } catch (Exception ex) {
 
@@ -379,7 +382,7 @@ public class MapsActivity extends AppCompatActivity {
                 // Add subject, Body, your mail Id, and receiver mail Id.
                 String line = null;
                 line = StringMake.getString();
-                sender.sendMail("Warning from parent control", line, "katsarosm47@gmail.com", "cse242017051@uniwa.gr");
+                sender.sendMail("Warning from parent control", line, "pavlos.repin@gmail.com", "cse242017051@uniwa.gr");
 
             } catch (Exception ex) {
 
@@ -459,9 +462,6 @@ public class MapsActivity extends AppCompatActivity {
         }
         if (requestCode == 69) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-
-
 
             } else {
 
