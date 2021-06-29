@@ -2,6 +2,7 @@ package com.example.locationapp;
 
 import java.security.AccessController;
 
+import java.security.PrivilegedAction;
 import java.security.Provider;
 
 public class JSSEProvider extends Provider {
@@ -12,27 +13,23 @@ public class JSSEProvider extends Provider {
 
         AccessController
 
-                .doPrivileged(new java.security.PrivilegedAction<Void>() {
+                .doPrivileged((PrivilegedAction<Void>) () -> {
 
-                    public Void run() {
+                    put("SSLContext.TLS",
 
-                        put("SSLContext.TLS",
+                            "org.apache.harmony.xnet.provider.jsse.SSLContextImpl");
 
-                                "org.apache.harmony.xnet.provider.jsse.SSLContextImpl");
+                    put("Alg.Alias.SSLContext.TLSv1", "TLS");
 
-                        put("Alg.Alias.SSLContext.TLSv1", "TLS");
+                    put("KeyManagerFactory.X509",
 
-                        put("KeyManagerFactory.X509",
+                            "org.apache.harmony.xnet.provider.jsse.KeyManagerFactoryImpl");
 
-                                "org.apache.harmony.xnet.provider.jsse.KeyManagerFactoryImpl");
+                    put("TrustManagerFactory.X509",
 
-                        put("TrustManagerFactory.X509",
+                            "org.apache.harmony.xnet.provider.jsse.TrustManagerFactoryImpl");
 
-                                "org.apache.harmony.xnet.provider.jsse.TrustManagerFactoryImpl");
-
-                        return null;
-
-                    }
+                    return null;
 
                 });
     }

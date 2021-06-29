@@ -27,10 +27,6 @@
         android:supportsRtl="true"
         android:icon="@mipmap/ic_launcher"
         android:theme="@style/Theme.LocationApp">
-        <service
-            android:name=".MyService"
-            android:enabled="true"
-            android:exported="true"></service>
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />

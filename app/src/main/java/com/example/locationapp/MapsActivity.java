@@ -1,8 +1,5 @@
 package com.example.locationapp;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -21,8 +18,6 @@ import android.os.Handler;
 import android.os.StrictMode;
 import android.telephony.SmsManager;
 import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -44,12 +39,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import android.widget.Button;
 import android.os.AsyncTask;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -270,16 +259,17 @@ public class MapsActivity extends AppCompatActivity {
                             LatLng latLng = new LatLng(location.getLatitude()
                                     , location.getLongitude());
 
-
-
                             System.out.println(Double.parseDouble(String.valueOf(location.getLongitude())));
                             if (Double.parseDouble(String.valueOf(location.getLongitude())) > 1) {
 
+                                Log.e("Pavlos","Send sms message");
                                 double lat = location.getLatitude();
                                 double lng = location.getLongitude();
 
                                 sendSMSMessage(lat, lng);
 
+                            } else {
+                                Log.e("Pavlos","Don't send sms message");
                             }
 
                             //Create marker options
