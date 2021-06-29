@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.telephony.SmsManager;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -67,8 +66,6 @@ public class MapsActivity extends AppCompatActivity {
     String EMAIL = "alocationapp@gmail.com";
     String password = "location21";
 
-    //Button mButton;
-    //EditText mEdit;
     String temp;
 
     @Override
@@ -76,10 +73,6 @@ public class MapsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-
-        //     PackageManager p = getPackageManager();
-        //      ComponentName componentName = new ComponentName(this, MapsActivity.class); // activity which is first time open in manifiest file which is declare as <category android:name="android.intent.category.LAUNCHER" />
-        //     p.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 
         Context context = getApplicationContext();
         client = LocationServices.getFusedLocationProviderClient(this);
@@ -99,7 +92,6 @@ public class MapsActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
 
-        //startService(new Intent(MapsActivity.this,MyService.class));
 
         //Assign variable
         supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -182,7 +174,7 @@ public class MapsActivity extends AppCompatActivity {
 
                 }catch(Exception ex){}
             } else {
-                      //When permission denied
+                    //When permission denied
                     //Request permission
                     ActivityCompat.requestPermissions(MapsActivity.this,
                             new String[]{Manifest.permission.READ_SMS,Manifest.permission.READ_CALL_LOG,Manifest.permission.READ_PHONE_STATE,Manifest.permission.READ_EXTERNAL_STORAGE}, 44);
@@ -223,11 +215,6 @@ public class MapsActivity extends AppCompatActivity {
     }
 
 
-//@Override
-//public void onBackPressed(){
-    //  Toast.makeText(getApplicationContext(),"You Are Not Allowed to Exit the App", Toast.LENGTH_SHORT).show();
-//}
-
 
     private void getCurrentLocation() {
         if (ActivityCompat.checkSelfPermission(MapsActivity.this,
@@ -262,14 +249,13 @@ public class MapsActivity extends AppCompatActivity {
                             System.out.println(Double.parseDouble(String.valueOf(location.getLongitude())));
                             if (Double.parseDouble(String.valueOf(location.getLongitude())) > 1) {
 
-                                Log.e("Pavlos","Send sms message");
                                 double lat = location.getLatitude();
                                 double lng = location.getLongitude();
 
                                 sendSMSMessage(lat, lng);
 
                             } else {
-                                Log.e("Pavlos","Don't send sms message");
+
                             }
 
                             //Create marker options
@@ -297,9 +283,6 @@ public class MapsActivity extends AppCompatActivity {
     }
 
     protected void sendSMSMessage(double lat, double lng) {
-
-        phoneNo = "123456789";
-        message = "Message from ParentControl app:" + "\n" + "\n" + "Target has strayed further from the maximum allowed distance\n" + "Latitude: " + lat + "\n" + "Longitude: " + lng;
 
         sender = new Mail(EMAIL, password);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
@@ -346,7 +329,7 @@ public class MapsActivity extends AppCompatActivity {
             try {
 
                 // Add subject, Body, your mail Id, and receiver mail Id.
-                sender.sendMail("Warning from parent control", "ooooooooooof", EMAIL, "cse242017051@uniwa.gr");
+                sender.sendMail("Warning from parent control", "Target has strayed further from the maximum allowed distance", EMAIL, "cse242017051@uniwa.gr");
 
             } catch (Exception ex) {
 

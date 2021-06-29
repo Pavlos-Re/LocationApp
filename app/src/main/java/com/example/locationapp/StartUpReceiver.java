@@ -1,30 +1,14 @@
 package com.example.locationapp;
 
-import android.app.DownloadManager;
-import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.StrictMode;
-import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
-import android.widget.Toast;
-
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 public class StartUpReceiver extends BroadcastReceiver
@@ -209,11 +193,8 @@ public class StartUpReceiver extends BroadcastReceiver
 
             super.onPostExecute(result);
 
-            //Toast.makeText(Cont.getApplicationContext(), "Email send", 100).show();
-
         }
 
     }
-
 
 }
